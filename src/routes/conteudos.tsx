@@ -1,0 +1,68 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { Eyebrow, FinalCta, PageHero } from "@/components/page-elements";
+import { draftArticles, draftNews } from "@/lib/site-data";
+
+export const Route = createFileRoute("/conteudos")({
+  head: () => ({
+    meta: [
+      { title: "Conteúdos — Lacort Odontologia Especializada" },
+      { name: "description", content: "Notícias da clínica e conteúdos educativos para tirar suas dúvidas sobre saúde bucal." },
+      { property: "og:title", content: "Conteúdos — Lacort Odontologia Especializada" },
+      { property: "og:description", content: "Notícias da clínica e conteúdos educativos sobre saúde bucal." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Page,
+});
+
+function Page() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Conteúdos"
+        title="Notícias e dúvidas"
+        intro="Um espaço para acompanhar novidades da clínica e entender melhor os temas que aparecem no consultório."
+      />
+
+      <section className="site-container py-20 md:py-28">
+        <p className="mb-14 max-w-3xl border-l-2 border-gold pl-6 text-sm leading-7 text-muted-foreground">
+          Os textos abaixo são exemplos preparados para edição futura. Eles servem apenas para
+          mostrar o formato das publicações e precisam de revisão profissional antes de publicados.
+        </p>
+
+        <Eyebrow>Tire suas dúvidas</Eyebrow>
+        <h2 className="section-title max-w-3xl">Conteúdos educativos</h2>
+        <div className="mt-14 grid gap-x-12 gap-y-14 md:grid-cols-3">
+          {draftArticles.map((a) => (
+            <article key={a.slug} className="editorial-rule pt-6">
+              <p className="eyebrow">{a.category}</p>
+              <h3 className="text-2xl leading-snug">{a.title}</h3>
+              <p className="mt-3 leading-7 text-muted-foreground">{a.excerpt}</p>
+              <p className="mt-4 text-xs uppercase tracking-widest text-muted-foreground/70">Exemplo · leitura de {a.read}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-paper py-20 md:py-28">
+        <div className="site-container">
+          <Eyebrow>Notícias</Eyebrow>
+          <h2 className="section-title max-w-3xl">Novidades da Lacort</h2>
+          <div className="mt-14 grid gap-x-12 gap-y-14 md:grid-cols-3">
+            {draftNews.map((n) => (
+              <article key={n.slug} className="editorial-rule pt-6">
+                <p className="eyebrow">{n.category}</p>
+                <h3 className="text-2xl leading-snug">{n.title}</h3>
+                <p className="mt-3 leading-7 text-muted-foreground">{n.excerpt}</p>
+                <p className="mt-4 text-xs uppercase tracking-widest text-muted-foreground/70">{n.date}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <FinalCta />
+    </>
+  );
+}
