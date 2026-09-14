@@ -1,18 +1,36 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Clock, MapPin, MessageCircle } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Clock3,
+  MapPin,
+  MessageCircle,
+  ShieldCheck,
+} from "lucide-react";
 import clinicaAsset from "@/assets/clinica-lacort.jpg.asset.json";
 import saraAsset from "@/assets/dra-sara-lacort.png.asset.json";
-import { ArrowLink, Eyebrow, FinalCta } from "@/components/page-elements";
+import { ArrowLink, Eyebrow } from "@/components/page-elements";
 import { Button } from "@/components/ui/button";
-import { clinic, draftArticles, treatments, whatsappUrl } from "@/lib/site-data";
+import { clinic, treatments, whatsappUrl } from "@/lib/site-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Lacort Odontologia Especializada — Vila Formosa, São Paulo" },
-      { name: "description", content: "Odontologia especializada com escuta e clareza em Vila Formosa, São Paulo. Estética, implantes, prótese, ortodontia e prevenção." },
-      { property: "og:title", content: "Lacort Odontologia Especializada — Vila Formosa, São Paulo" },
-      { property: "og:description", content: "Odontologia especializada com escuta e clareza em Vila Formosa, São Paulo." },
+      { title: "Dentista na Vila Formosa | Lacort Odontologia Especializada" },
+      {
+        name: "description",
+        content:
+          "Atendimento odontológico humanizado na Vila Formosa, São Paulo. Avaliação cuidadosa, explicações claras e tratamentos planejados no seu tempo.",
+      },
+      {
+        property: "og:title",
+        content: "Lacort Odontologia — cuidado sem pressa e sem julgamentos",
+      },
+      {
+        property: "og:description",
+        content:
+          "Atendimento odontológico humanizado na Vila Formosa, com escuta, clareza e planejamento individualizado.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,131 +38,328 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const pillars = [
-  { title: "Escuta antes do procedimento", text: "A conversa inicial existe para entender a sua história, suas dúvidas e o seu tempo." },
-  { title: "Clareza em cada etapa", text: "Explicamos o que foi observado, as possibilidades e o que cada caminho envolve." },
-  { title: "Cuidado especializado", text: "Diferentes áreas da odontologia reunidas em um planejamento individualizado." },
+const reasons = [
+  "Você sente medo, vergonha ou ansiedade antes de uma consulta.",
+  "Faz tempo que não vai ao dentista e não sabe por onde começar.",
+  "Quer entender as opções antes de decidir qualquer tratamento.",
+];
+
+const journey = [
+  {
+    number: "01",
+    title: "A gente conversa",
+    text: "Você conta o que incomoda, o que espera e também o que preocupa.",
+  },
+  {
+    number: "02",
+    title: "Avaliamos com calma",
+    text: "O exame é feito respeitando seus limites e o tempo necessário.",
+  },
+  {
+    number: "03",
+    title: "Explicamos o cenário",
+    text: "Você entende o que foi observado e quais caminhos podem ser considerados.",
+  },
+  {
+    number: "04",
+    title: "Você decide",
+    text: "O plano é construído com clareza, prioridades e espaço para perguntas.",
+  },
+];
+
+const faqs = [
+  {
+    question: "Tenho medo de dentista. Posso avisar antes?",
+    answer:
+      "Sim. Conte isso já no primeiro contato. Assim, o atendimento pode ser preparado com mais tempo, explicações e pausas sempre que você precisar.",
+  },
+  {
+    question: "Preciso fazer o tratamento no mesmo dia?",
+    answer:
+      "Não. A primeira consulta serve para conversar, avaliar e explicar as possibilidades. Você decide os próximos passos depois de compreender o seu caso.",
+  },
+  {
+    question: "Vocês atendem convênio?",
+    answer:
+      "As condições de atendimento podem mudar. Fale com a recepção pelo WhatsApp para confirmar os convênios e procedimentos disponíveis.",
+  },
+  {
+    question: "O que devo levar à primeira consulta?",
+    answer:
+      "Leve um documento e, se tiver, radiografias ou exames odontológicos recentes. Se não tiver exames, a necessidade será avaliada durante a consulta.",
+  },
 ];
 
 function Index() {
   return (
     <>
-      <section className="border-b border-border bg-cream">
-        <div className="site-container grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[1.05fr_.95fr] lg:gap-20">
-          <div>
-            <Eyebrow>Vila Formosa · São Paulo</Eyebrow>
-            <h1 className="section-title max-w-2xl">Odontologia especializada, feita no seu tempo.</h1>
-            <p className="page-intro">
-              Na Lacort, cada atendimento começa por uma conversa. Entender o que você sente e o que
-              você espera é o que permite construir um plano de cuidado realmente seu.
+      <section className="home-hero">
+        <div className="home-orbit home-orbit-one" aria-hidden="true" />
+        <div className="home-orbit home-orbit-two" aria-hidden="true" />
+        <div className="site-container home-hero-grid">
+          <div className="home-hero-copy">
+            <p className="home-kicker">
+              <span />
+              Odontologia humanizada · Vila Formosa
             </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Button asChild variant="gold" size="lg">
-                <a href={whatsappUrl()} target="_blank" rel="noreferrer">Agendar avaliação</a>
+            <h1 className="home-title">
+              Seu sorriso merece cuidado.
+              <em> Você merece ser ouvida.</em>
+            </h1>
+            <p className="home-lead">
+              Atendimento odontológico com calma, explicações claras e um plano construído
+              junto com você — sem pressa e sem julgamentos.
+            </p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Button asChild variant="gold" size="lg" className="home-primary-button">
+                <a href={whatsappUrl("Olá! Conheci a Lacort pelo site e gostaria de agendar uma avaliação.")} target="_blank" rel="noreferrer">
+                  Agendar minha avaliação
+                  <ArrowRight />
+                </a>
               </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link to="/tratamentos">Conhecer tratamentos</Link>
+              <Button asChild variant="outlineDark" size="lg" className="home-secondary-button">
+                <a href="#tratamentos">Ver tratamentos</a>
               </Button>
             </div>
-            <dl className="mt-12 grid gap-6 border-t border-border pt-8 text-sm sm:grid-cols-3">
-              <div><dt className="footer-title text-gold-deep">Endereço</dt><dd className="mt-2 text-muted-foreground">{clinic.address}<br />{clinic.district}</dd></div>
-              <div><dt className="footer-title text-gold-deep">Horários</dt><dd className="mt-2 text-muted-foreground">{clinic.hours.map((h) => <span key={h} className="block">{h}</span>)}</dd></div>
-              <div><dt className="footer-title text-gold-deep">Responsável</dt><dd className="mt-2 text-muted-foreground">{clinic.director}<br />{clinic.registration}</dd></div>
-            </dl>
+            <div className="home-first-visit">
+              <ShieldCheck aria-hidden="true" />
+              <p>
+                <strong>Primeira consulta com clareza:</strong>
+                conversa, avaliação e próximos passos explicados.
+              </p>
+            </div>
           </div>
-          <div className="image-frame aspect-[4/5] w-full">
-            <img src={clinicaAsset.url} alt="Ambiente de atendimento da Lacort Odontologia Especializada" loading="eager" />
+
+          <div className="home-visual">
+            <div className="home-photo-frame">
+              <img
+                src={saraAsset.url}
+                alt="Dra. Sara Lacort, cirurgiã-dentista da Lacort Odontologia"
+                loading="eager"
+                fetchPriority="high"
+              />
+            </div>
+            <div className="home-photo-caption">
+              <p>Dra. Sara Lacort</p>
+              <span>{clinic.registration}</span>
+            </div>
+            <div className="home-place-note">
+              <MapPin aria-hidden="true" />
+              <span>Vila Formosa<br />São Paulo</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="site-container py-20 md:py-28">
-        <Eyebrow>Nosso jeito de cuidar</Eyebrow>
-        <h2 className="section-title max-w-3xl">Um atendimento que começa pela conversa.</h2>
-        <div className="mt-14 grid gap-10 md:grid-cols-3">
-          {pillars.map((p, i) => (
-            <div key={p.title} className="editorial-rule pt-6">
-              <span className="font-brand text-sm text-gold-deep">0{i + 1}</span>
-              <h3 className="mt-4 text-2xl">{p.title}</h3>
-              <p className="mt-3 leading-7 text-muted-foreground">{p.text}</p>
+      <section className="home-assurance" aria-label="Diferenciais do atendimento">
+        <div className="site-container home-assurance-grid">
+          <p><Check /> Atendimento no seu ritmo</p>
+          <p><Check /> Explicação antes de cada etapa</p>
+          <p><Check /> Planejamento individualizado</p>
+        </div>
+      </section>
+
+      <section className="site-container home-empathy">
+        <div>
+          <Eyebrow>Você não precisa adiar mais</Eyebrow>
+          <h2 className="home-section-title">
+            Cuidar da saúde bucal não deveria começar pelo medo.
+          </h2>
+        </div>
+        <div>
+          <p className="home-section-intro">Talvez você esteja aqui porque:</p>
+          <ul className="home-reason-list">
+            {reasons.map((reason) => (
+              <li key={reason}>
+                <span aria-hidden="true" />
+                {reason}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8 max-w-xl leading-8 text-muted-foreground">
+            Seja qual for o ponto de partida, a consulta começa entendendo sua história. Não existe
+            bronca por ter esperado e nenhuma decisão precisa ser tomada sem você compreender o porquê.
+          </p>
+          <div className="mt-8">
+            <ArrowLink to="/pacientes">Entenda como será seu atendimento</ArrowLink>
+          </div>
+        </div>
+      </section>
+
+      <section id="tratamentos" className="home-treatments">
+        <div className="site-container">
+          <div className="home-section-heading">
+            <div>
+              <Eyebrow>Tratamentos</Eyebrow>
+              <h2 className="home-section-title max-w-3xl">
+                Diferentes caminhos. Um cuidado pensado para você.
+              </h2>
             </div>
+            <p>
+              Cada indicação depende de avaliação clínica. Primeiro entendemos sua necessidade;
+              depois, explicamos as possibilidades.
+            </p>
+          </div>
+
+          <div className="home-treatment-grid">
+            {treatments.map((t, index) => (
+              <article key={t.slug} className="home-treatment-item">
+                <div className="home-treatment-number">{String(index + 1).padStart(2, "0")}</div>
+                <div>
+                  <p className="eyebrow">{t.category}</p>
+                  <h3>{t.title}</h3>
+                  <p>{t.description}</p>
+                  <span>{t.items}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-12">
+            <Button asChild variant="outline" size="lg" className="rounded-none">
+              <Link to="/tratamentos">
+                Conhecer todas as áreas
+                <ArrowRight />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="home-journey">
+        <div className="site-container">
+          <div className="max-w-3xl">
+            <Eyebrow>Primeira consulta</Eyebrow>
+            <h2 className="home-section-title text-cream">
+              Você sabe o que vai acontecer — desde o começo.
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-cream/70">
+              Informação também faz parte do cuidado. Por isso, a primeira consulta tem um caminho
+              simples e transparente.
+            </p>
+          </div>
+          <ol className="home-journey-grid">
+            {journey.map((step) => (
+              <li key={step.number}>
+                <span>{step.number}</span>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </li>
+            ))}
+          </ol>
+          <Button asChild variant="gold" size="lg" className="mt-12 home-primary-button">
+            <a href={whatsappUrl("Olá! Gostaria de saber mais sobre a primeira consulta na Lacort.")} target="_blank" rel="noreferrer">
+              Conversar sobre a primeira consulta
+            </a>
+          </Button>
+        </div>
+      </section>
+
+      <section className="site-container home-clinic">
+        <div className="home-clinic-image">
+          <img
+            src={clinicaAsset.url}
+            alt="Consultório da Lacort Odontologia Especializada na Vila Formosa"
+            loading="lazy"
+          />
+          <span>Ambiente real da clínica</span>
+        </div>
+        <div>
+          <Eyebrow>A Lacort</Eyebrow>
+          <h2 className="home-section-title">Um espaço reservado para cuidar de você.</h2>
+          <p className="home-section-intro">
+            Na Vila Formosa, a clínica foi pensada para oferecer um atendimento próximo, tranquilo
+            e com atenção verdadeira a cada pessoa.
+          </p>
+          <div className="home-location-details">
+            <div>
+              <MapPin />
+              <p><strong>{clinic.address}</strong><span>{clinic.district}<br />{clinic.postalCode}</span></p>
+            </div>
+            <div>
+              <Clock3 />
+              <p><strong>Horários</strong><span>{clinic.hours.map((hour) => <small key={hour}>{hour}</small>)}</span></p>
+            </div>
+          </div>
+          <div className="mt-9 flex flex-wrap gap-6">
+            <a className="arrow-link" href={clinic.mapsUrl} target="_blank" rel="noreferrer">
+              Como chegar
+              <ArrowRight />
+            </a>
+            <ArrowLink to="/sobre">Conhecer a Lacort</ArrowLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="home-professional">
+        <div className="site-container home-professional-grid">
+          <div>
+            <p className="home-monogram" aria-hidden="true">L</p>
+          </div>
+          <div>
+            <Eyebrow>À frente do seu cuidado</Eyebrow>
+            <h2 className="home-section-title text-cream">Dra. Sara Lacort</h2>
+            <p className="mt-7 max-w-3xl text-xl leading-9 text-cream/78">
+              “Um atendimento bem conduzido começa quando o paciente entende que pode falar,
+              perguntar e participar das decisões sobre o próprio tratamento.”
+            </p>
+            <p className="mt-8 text-sm uppercase tracking-[0.16em] text-gold">
+              Cirurgiã-dentista · {clinic.registration}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-container home-faq">
+        <div>
+          <Eyebrow>Dúvidas frequentes</Eyebrow>
+          <h2 className="home-section-title">Antes de agendar, você pode querer saber.</h2>
+          <p className="home-section-intro">
+            Se sua dúvida não estiver aqui, a recepção responde diretamente pelo WhatsApp.
+          </p>
+          <a
+            className="home-whatsapp-link"
+            href={whatsappUrl("Olá! Tenho uma dúvida antes de agendar uma avaliação.")} 
+            target="_blank"
+            rel="noreferrer"
+          >
+            <MessageCircle />
+            Tirar uma dúvida
+          </a>
+        </div>
+        <div className="home-faq-list">
+          {faqs.map((faq, index) => (
+            <details key={faq.question}>
+              <summary>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                {faq.question}
+              </summary>
+              <p>{faq.answer}</p>
+            </details>
           ))}
         </div>
       </section>
 
-      <section className="bg-paper py-20 md:py-28">
-        <div className="site-container">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <Eyebrow>Tratamentos</Eyebrow>
-              <h2 className="section-title max-w-2xl">Áreas de cuidado</h2>
-            </div>
-            <ArrowLink to="/tratamentos">Ver todos os tratamentos</ArrowLink>
+      <section className="home-final">
+        <div className="site-container home-final-grid">
+          <div>
+            <Eyebrow>Seu próximo passo</Eyebrow>
+            <h2>Comece com uma conversa.</h2>
+            <p>
+              Conte brevemente o que você precisa. A equipe orienta o agendamento pelo WhatsApp.
+            </p>
           </div>
-          <div className="mt-14 grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
-            {treatments.map((t) => (
-              <article key={t.slug} className="editorial-rule pt-6">
-                <p className="eyebrow">{t.category}</p>
-                <h3 className="text-2xl">{t.title}</h3>
-                <p className="mt-3 leading-7 text-muted-foreground">{t.description}</p>
-                <p className="mt-4 text-sm text-muted-foreground/80">{t.items}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-         
-         <section className="site-container grid items-center gap-12 py-20 md:py-28 lg:grid-cols-[.85fr_1.15fr] lg:gap-20">
-        <div className="image-frame aspect-[4/5] w-full">
-          <img src={saraAsset.url} alt="Dra. Sara Lacort, responsável técnica da Lacort Odontologia Especializada" loading="lazy" />
-        </div>
-        <div>
-          <Eyebrow>Responsável técnica</Eyebrow>
-          <h2 className="section-title">Dra. Sara Lacort</h2>
-          <p className="page-intro">
-            À frente da Lacort Odontologia Especializada, a Dra. Sara conduz o atendimento com
-            atenção ao que cada pessoa traz: a queixa, o histórico, o receio e a expectativa.
-          </p>
-          <p className="mt-6 max-w-2xl leading-8 text-muted-foreground">
-            O trabalho reúne diferentes especialidades da odontologia em um planejamento
-            individualizado, sempre explicado com transparência antes de qualquer decisão.
-          </p>
-          <p className="mt-6 text-sm text-muted-foreground">{clinic.registration}</p>
-          <div className="mt-10"><ArrowLink to="/sobre">Conhecer a clínica</ArrowLink></div>
-        </div>
-      </section>
-      
-
-      <section className="bg-paper py-20 md:py-28">
-        <div className="site-container">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <Eyebrow>Tire suas dúvidas</Eyebrow>
-              <h2 className="section-title max-w-2xl">Conteúdos para entender melhor</h2>
-            </div>
-            <ArrowLink to="/conteudos">Ver todos os conteúdos</ArrowLink>
-          </div>
-          <div className="mt-14 grid gap-10 md:grid-cols-3">
-            {draftArticles.map((a) => (
-              <article key={a.slug} className="editorial-rule pt-6">
-                <p className="eyebrow">{a.category}</p>
-                <h3 className="text-2xl leading-snug">{a.title}</h3>
-                <p className="mt-3 leading-7 text-muted-foreground">{a.excerpt}</p>
-                <p className="mt-4 text-xs uppercase tracking-widest text-muted-foreground/70">Leitura de {a.read}</p>
-              </article>
-            ))}
+          <div className="home-final-action">
+            <Button asChild variant="gold" size="lg" className="home-primary-button">
+              <a href={whatsappUrl("Olá! Gostaria de agendar uma avaliação na Lacort Odontologia.")} target="_blank" rel="noreferrer">
+                Agendar pelo WhatsApp
+                <ArrowRight />
+              </a>
+            </Button>
+            <span>{clinic.whatsappDisplay}</span>
           </div>
         </div>
       </section>
-
-      <section className="site-container grid gap-10 py-20 md:grid-cols-3 md:py-24">
-        <div className="editorial-rule pt-6"><MapPin className="size-5 text-gold-deep" /><h3 className="mt-4 text-2xl">Onde estamos</h3><p className="mt-3 leading-7 text-muted-foreground">{clinic.address}<br />{clinic.district}<br />{clinic.postalCode}</p></div>
-        <div className="editorial-rule pt-6"><Clock className="size-5 text-gold-deep" /><h3 className="mt-4 text-2xl">Horários</h3><p className="mt-3 leading-7 text-muted-foreground">{clinic.hours.map((h) => <span key={h} className="block">{h}</span>)}</p></div>
-        <div className="editorial-rule pt-6"><MessageCircle className="size-5 text-gold-deep" /><h3 className="mt-4 text-2xl">Fale conosco</h3><p className="mt-3 leading-7 text-muted-foreground">{clinic.whatsappDisplay}<br />{clinic.email}</p><div className="mt-5"><ArrowLink to="/contato">Ir para contato</ArrowLink></div></div>
-      </section>
-
-      <FinalCta />
     </>
   );
 }
