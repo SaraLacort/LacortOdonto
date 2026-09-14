@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import logoAsset from "@/assets/lacort-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { nav, whatsappUrl } from "@/lib/site-data";
 
@@ -16,7 +15,7 @@ export function SiteHeader() {
   return <header className={`site-header ${scrolled ? "site-header-scrolled" : ""}`}>
     <div className="site-container flex h-full items-center justify-between gap-6">
       <Link to="/" aria-label="Lacort Odontologia — início" onClick={() => setOpen(false)}>
-        <img src={logoAsset.url} alt="Lacort Odontologia Especializada" className="h-12 w-auto md:h-14" />
+        <img src="/lacort-logo-branco.webp" alt="Lacort Odontologia Especializada" className="h-12 w-auto md:h-14" />
       </Link>
       <nav aria-label="Navegação principal" className="hidden items-center gap-5 xl:flex">
         {nav.map((item) => <Link key={item.to} to={item.to} className="nav-link" activeProps={{ className: "nav-link nav-link-active" }}>{item.label}</Link>)}

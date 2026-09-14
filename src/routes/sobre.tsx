@@ -1,6 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import clinicaAsset from "@/assets/clinica-lacort.jpg.asset.json";
-import saraAsset from "@/assets/dra-sara-lacort.png.asset.json";
 import { Eyebrow, FinalCta, PageHero } from "@/components/page-elements";
 import { clinic } from "@/lib/site-data";
 
@@ -36,7 +34,7 @@ function Page() {
 
       <section className="site-container py-20 md:py-28">
         <div className="image-frame aspect-[16/9] w-full">
-          <img src={clinicaAsset.url} alt="Ambiente da Lacort Odontologia Especializada" loading="lazy" />
+          <img src={"/clinica-lacort.jpg"} alt="Ambiente da Lacort Odontologia Especializada" loading="lazy" />
         </div>
         <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
           <div>
@@ -69,7 +67,7 @@ function Page() {
       {/* SEÇAO DRA SARA LACORT
       <section className="site-container grid items-center gap-12 py-20 md:py-28 lg:grid-cols-[.85fr_1.15fr] lg:gap-20">
         <div className="image-frame aspect-[4/5] w-full">
-          <img src={saraAsset.url} alt="Dra. Sara Lacort" loading="lazy" />
+          <img src={"/dra-sara-lacort.webp"} alt="Dra. Sara Lacort" loading="lazy" />
         </div>
         <div>
           <Eyebrow>Responsável técnica</Eyebrow>

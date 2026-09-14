@@ -7,8 +7,6 @@ import {
   MessageCircle,
   ShieldCheck,
 } from "lucide-react";
-import clinicaAsset from "@/assets/clinica-lacort.jpg.asset.json";
-import saraAsset from "@/assets/dra-sara-lacort.png.asset.json";
 import { ArrowLink, Eyebrow } from "@/components/page-elements";
 import { Button } from "@/components/ui/button";
 import { clinic, treatments, whatsappUrl } from "@/lib/site-data";
@@ -133,7 +131,7 @@ function Index() {
           <div className="home-visual">
             <div className="home-photo-frame">
               <img
-                src={saraAsset.url}
+                src={"/dra-sara-lacort.webp"}
                 alt="Dra. Sara Lacort, cirurgiã-dentista da Lacort Odontologia"
                 loading="eager"
                 fetchPriority="high"
@@ -258,7 +256,7 @@ function Index() {
       <section className="site-container home-clinic">
         <div className="home-clinic-image">
           <img
-            src={clinicaAsset.url}
+            src={"/clinica-lacort.jpg"}
             alt="Consultório da Lacort Odontologia Especializada na Vila Formosa"
             loading="lazy"
           />

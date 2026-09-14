@@ -1,12 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, MapPin, MessageCircle } from "lucide-react";
-import logoAsset from "@/assets/lacort-logo-branco.png.asset.json";
 import { clinic, nav, whatsappUrl } from "@/lib/site-data";
 
 export function SiteFooter() {
   return <footer className="bg-ink text-cream">
     <div className="site-container grid gap-12 py-16 md:grid-cols-[1.2fr_.8fr_.8fr] md:py-20">
-      <div><img src={logoAsset.url} alt="Lacort Odontologia Especializada" className="h-20 w-auto" /><p className="mt-6 max-w-sm text-sm leading-7 text-cream/70">Odontologia especializada com escuta, clareza e respeito em cada etapa do seu cuidado.</p></div>
+      <div><img  alt="Lacort Odontologia Especializada" className="h-20 w-auto" /><p className="mt-6 max-w-sm text-sm leading-7 text-cream/70">Odontologia especializada com escuta, clareza e respeito em cada etapa do seu cuidado.</p></div>
       <div><p className="footer-title">Navegue</p><nav className="mt-5 grid gap-3">{nav.map((item) => <Link key={item.to} to={item.to} className="footer-link">{item.label}</Link>)}</nav></div>
       
       <div><p className="footer-title">Encontre a Lacort</p><div className="mt-5 grid gap-4 text-sm text-cream/75"><a
