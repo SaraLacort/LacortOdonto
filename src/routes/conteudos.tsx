@@ -19,19 +19,11 @@ export const Route = createFileRoute("/conteudos")({
 function Page() {
   return (
     <>
-      <PageHero
-        eyebrow="Conteúdos"
-        title="Notícias e dúvidas"
-        intro="Um espaço para acompanhar novidades da clínica e entender melhor os temas que aparecem no consultório."
-      />
 
       <section className="site-container py-20 md:py-28">
-        <p className="mb-14 max-w-3xl border-l-2 border-gold pl-6 text-sm leading-7 text-muted-foreground">
-          Os textos abaixo são exemplos preparados para edição futura. Eles servem apenas para
-          mostrar o formato das publicações e precisam de revisão profissional antes de publicados.
-        </p>
 
-        <Eyebrow>Tire suas dúvidas</Eyebrow>
+
+      
         <h2 className="section-title max-w-3xl">Conteúdos educativos</h2>
         <div className="mt-14 grid gap-x-12 gap-y-14 md:grid-cols-3">
           {draftArticles.map((a) => (

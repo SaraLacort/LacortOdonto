@@ -33,11 +33,7 @@ const faqs = [
 function Page() {
   return (
     <>
-      <PageHero
-        eyebrow="Para Pacientes"
-        title="O que esperar do seu atendimento."
-        intro="Informações práticas sobre a primeira consulta, o cuidado com quem sente medo e as perguntas que mais recebemos."
-      />
+
 
       <section className="site-container py-20 md:py-28">
         <Eyebrow>Primeira consulta</Eyebrow>

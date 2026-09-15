@@ -19,13 +19,11 @@ export const Route = createFileRoute("/tratamentos")({
 function Page() {
   return (
     <>
-      <PageHero
-        eyebrow="Tratamentos"
-        title="Áreas de cuidado"
-        intro="Cada tratamento depende de avaliação individual. As descrições abaixo são informativas e não substituem uma consulta profissional."
-      />
+      
 
       <section className="site-container py-20 md:py-28">
+        <h2 className="section-title max-w-3xl">O tratamento certo começa com um bom diagnóstico.</h2>
+        <Eyebrow> </Eyebrow>
         <div className="grid gap-x-14 gap-y-16 md:grid-cols-2">
           {treatments.map((t, i) => (
             <article key={t.slug} className="editorial-rule pt-8">
@@ -46,6 +44,7 @@ function Page() {
       </section>
 
       <FinalCta />
+      
     </>
   );
 }

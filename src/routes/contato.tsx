@@ -56,11 +56,7 @@ function Page() {
 
   return (
     <>
-      <PageHero
-        eyebrow="Contato"
-        title="Vamos conversar."
-        intro="Envie sua mensagem ou fale direto pelo WhatsApp. Retornamos dentro do horário de atendimento."
-      />
+
 
       <section className="site-container grid gap-16 py-20 md:py-28 lg:grid-cols-[1.05fr_.95fr]">
         <div>

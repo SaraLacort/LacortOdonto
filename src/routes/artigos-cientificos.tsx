@@ -18,11 +18,7 @@ export const Route = createFileRoute("/artigos-cientificos")({
 function Page() {
   return (
     <>
-      <PageHero
-        eyebrow="Produção Científica"
-        title="Estudo que sustenta a prática."
-        intro="Esta seção reúne publicações, participações em eventos e produção acadêmica da equipe."
-      />
+
 
       <section className="site-container py-20 md:py-28">
         <div className="max-w-3xl">

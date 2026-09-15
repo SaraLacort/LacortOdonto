@@ -18,6 +18,7 @@ import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as TratamentosRouteImport } from './routes/tratamentos'
+import { Route as TratamentosSlugRouteImport } from './routes/tratamentos/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const TratamentosRoute = TratamentosRouteImport.update({
   path: '/tratamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TratamentosSlugRoute = TratamentosSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TratamentosRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,7 +80,8 @@ export interface FileRoutesByFullPath {
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
-  '/tratamentos': typeof TratamentosRoute
+  '/tratamentos': typeof TratamentosRouteWithChildren
+  '/tratamentos/$slug': typeof TratamentosSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,7 +92,8 @@ export interface FileRoutesByTo {
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
-  '/tratamentos': typeof TratamentosRoute
+  '/tratamentos': typeof TratamentosRouteWithChildren
+  '/tratamentos/$slug': typeof TratamentosSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,7 +105,8 @@ export interface FileRoutesById {
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
-  '/tratamentos': typeof TratamentosRoute
+  '/tratamentos': typeof TratamentosRouteWithChildren
+  '/tratamentos/$slug': typeof TratamentosSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
+    | '/tratamentos/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
+    | '/tratamentos/$slug'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
+    | '/tratamentos/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,7 +156,7 @@ export interface RootRouteChildren {
   PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
   SobreRoute: typeof SobreRoute
   TermosDeUsoRoute: typeof TermosDeUsoRoute
-  TratamentosRoute: typeof TratamentosRoute
+  TratamentosRoute: typeof TratamentosRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -212,8 +224,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TratamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tratamentos/$slug': {
+      id: '/tratamentos/$slug'
+      path: '/$slug'
+      fullPath: '/tratamentos/$slug'
+      preLoaderRoute: typeof TratamentosSlugRouteImport
+      parentRoute: typeof TratamentosRoute
+    }
   }
 }
+
+interface TratamentosRouteChildren {
+  TratamentosSlugRoute: typeof TratamentosSlugRoute
+}
+
+const TratamentosRouteChildren: TratamentosRouteChildren = {
+  TratamentosSlugRoute: TratamentosSlugRoute,
+}
+
+const TratamentosRouteWithChildren = TratamentosRoute._addFileChildren(
+  TratamentosRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -224,7 +255,7 @@ const rootRouteChildren: RootRouteChildren = {
   PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
   SobreRoute: SobreRoute,
   TermosDeUsoRoute: TermosDeUsoRoute,
-  TratamentosRoute: TratamentosRoute,
+  TratamentosRoute: TratamentosRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

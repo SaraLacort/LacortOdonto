@@ -26,15 +26,20 @@ const values = [
 function Page() {
   return (
     <>
-      <PageHero
-        eyebrow="A Clínica"
-        title="Um espaço pensado para o cuidado."
-        intro="A Lacort Odontologia Especializada reúne diferentes áreas da odontologia em um atendimento individualizado, na Vila Formosa, em São Paulo."
-      />
 
       <section className="site-container py-20 md:py-28">
-        <div className="image-frame aspect-[16/9] w-full">
+         <h2 className="section-title max-w-3xl">Conheça nosso espaço.</h2>
+         <eyebrow>  </eyebrow>
+         <div className="space-y-4">
+        <p>  </p>
+        <p>  </p>
+       
+
+        </div>
+    
+        <div className="image-frame aspect-[16/9] w-full max-w-4xl mx-auto border-8 border-gold rounded-lg overflow-hidden">
           <img src={"/clinica-lacort.jpg"} alt="Ambiente da Lacort Odontologia Especializada" loading="lazy" />
+       
         </div>
         <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
           <div>

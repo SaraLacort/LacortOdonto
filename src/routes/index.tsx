@@ -37,9 +37,11 @@ export const Route = createFileRoute("/")({
 });
 
 const reasons = [
-  "Você sente medo, vergonha ou ansiedade antes de uma consulta.",
-  "Faz tempo que não vai ao dentista e não sabe por onde começar.",
-  "Quer entender as opções antes de decidir qualquer tratamento.",
+  "Quero manter minha saúde bucal em dia e prevenir problemas.",
+  "Preciso recuperar dentes, mastigação ou conforto ao sorrir.",
+  "Gostaria de melhorar a estética do meu sorriso com naturalidade.",
+  "Estou sentindo dor, sensibilidade ou algum desconforto.",
+  "Faz tempo que não vou ao dentista ou sinto receio de começar.",
 ];
 
 const journey = [
@@ -101,12 +103,11 @@ function Index() {
               Odontologia humanizada · Vila Formosa
             </p>
             <h1 className="home-title">
-              Seu sorriso merece cuidado.
-              <em> Você merece ser ouvida.</em>
+              Você merece confiança 
+              <em> para sorrir.</em>
             </h1>
             <p className="home-lead">
-              Atendimento odontológico com calma, explicações claras e um plano construído
-              junto com você — sem pressa e sem julgamentos.
+              Atendimento odontológico individualizado, com escuta, clareza e tranquilidade em cada etapa do seu tratamento.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="gold" size="lg" className="home-primary-button">
@@ -131,16 +132,16 @@ function Index() {
           <div className="home-visual">
             <div className="home-photo-frame">
               <img
-                src={"/dra-sara-lacort.webp"}
+                src={"/modelo.webp"}
                 alt="Dra. Sara Lacort, cirurgiã-dentista da Lacort Odontologia"
                 loading="eager"
                 fetchPriority="high"
               />
             </div>
-            <div className="home-photo-caption">
+            {/*<div className="home-photo-caption">
               <p>Dra. Sara Lacort</p>
               <span>{clinic.registration}</span>
-            </div>
+            </div>*/}
             <div className="home-place-note">
               <MapPin aria-hidden="true" />
               <span>Vila Formosa<br />São Paulo</span>
@@ -157,32 +158,44 @@ function Index() {
         </div>
       </section>
 
-      <section className="site-container home-empathy">
-        <div>
-          <Eyebrow>Você não precisa adiar mais</Eyebrow>
-          <h2 className="home-section-title">
-            Cuidar da saúde bucal não deveria começar pelo medo.
-          </h2>
-        </div>
-        <div>
-          <p className="home-section-intro">Talvez você esteja aqui porque:</p>
-          <ul className="home-reason-list">
-            {reasons.map((reason) => (
-              <li key={reason}>
-                <span aria-hidden="true" />
-                {reason}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8 max-w-xl leading-8 text-muted-foreground">
-            Seja qual for o ponto de partida, a consulta começa entendendo sua história. Não existe
-            bronca por ter esperado e nenhuma decisão precisa ser tomada sem você compreender o porquê.
-          </p>
-          <div className="mt-8">
-            <ArrowLink to="/pacientes">Entenda como será seu atendimento</ArrowLink>
-          </div>
-        </div>
-      </section>
+<section className="site-container home-empathy">
+  <div>
+    <Eyebrow>Cuidado para diferentes momentos</Eyebrow>
+
+    <h2 className="home-section-title">
+      Da prevenção à reabilitação, cada sorriso pede um caminho.
+    </h2>
+
+        <p className="mt-8 max-w-xl leading-8 text-muted-foreground">
+      Seja para prevenir, recuperar a função, tratar um desconforto ou
+      transformar a forma como você se sente ao sorrir, o primeiro passo é
+      entender sua necessidade e avaliar as possibilidades para o seu caso.
+    </p>
+  </div>
+
+  <div>
+    <p className="home-section-intro">
+      O que trouxe você até aqui?
+    </p>
+
+    <ul className="home-reason-list">
+      {reasons.map((reason) => (
+        <li key={reason}>
+          <span aria-hidden="true" />
+          {reason}
+        </li>
+      ))}
+    </ul>
+
+
+
+    <div className="mt-8">
+      <ArrowLink to="/tratamentos">
+        Conhecer as possibilidades de tratamento
+      </ArrowLink>
+    </div>
+  </div>
+</section>
 
       <section id="tratamentos" className="home-treatments">
         <div className="site-container">
@@ -193,10 +206,7 @@ function Index() {
                 Diferentes caminhos. Um cuidado pensado para você.
               </h2>
             </div>
-            <p>
-              Cada indicação depende de avaliação clínica. Primeiro entendemos sua necessidade;
-              depois, explicamos as possibilidades.
-            </p>
+
           </div>
 
           <div className="home-treatment-grid">
@@ -292,7 +302,18 @@ function Index() {
       <section className="home-professional">
         <div className="site-container home-professional-grid">
           <div>
-            <p className="home-monogram" aria-hidden="true">L</p>
+<img 
+  src="dra-sara-lacort.webp" 
+  loading="eager" 
+  fetchPriority="high" 
+  style={{
+    width: '300px',
+    height: '300px',
+    borderRadius: '50%',
+    objectFit: 'cover'
+  }}
+/>
+
           </div>
           <div>
             <Eyebrow>À frente do seu cuidado</Eyebrow>
@@ -322,7 +343,7 @@ function Index() {
             rel="noreferrer"
           >
             <MessageCircle />
-            Tirar uma dúvida
+            Tenho uma dúvida
           </a>
         </div>
         <div className="home-faq-list">
@@ -344,7 +365,7 @@ function Index() {
             <Eyebrow>Seu próximo passo</Eyebrow>
             <h2>Comece com uma conversa.</h2>
             <p>
-              Conte brevemente o que você precisa. A equipe orienta o agendamento pelo WhatsApp.
+              Conte brevemente o que você precisa.
             </p>
           </div>
           <div className="home-final-action">
