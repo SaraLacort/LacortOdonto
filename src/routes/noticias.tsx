@@ -2,13 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Eyebrow, FinalCta, PageHero } from "@/components/page-elements";
 import { draftArticles, draftNews } from "@/lib/site-data";
 
-export const Route = createFileRoute("/conteudos")({
+export const Route = createFileRoute("/noticias")({
   head: () => ({
     meta: [
-      { title: "Conteúdos — Lacort Odontologia Especializada" },
-      { name: "description", content: "Notícias da clínica e conteúdos educativos para tirar suas dúvidas sobre saúde bucal." },
-      { property: "og:title", content: "Conteúdos — Lacort Odontologia Especializada" },
-      { property: "og:description", content: "Notícias da clínica e conteúdos educativos sobre saúde bucal." },
+      { title: "Notícias — Lacort Odontologia Especializada" },
+      { name: "description", content: "Notícias importantes e educativas para tirar suas dúvidas sobre saúde bucal." },
+      { property: "og:title", content: "Notícias — Lacort Odontologia Especializada" },
+      { property: "og:description", content: "Notícias da clínica e noticias educativas sobre saúde bucal." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -20,11 +20,8 @@ function Page() {
   return (
     <>
 
-      <section className="site-container py-20 md:py-28">
-
-
-      
-        <h2 className="section-title max-w-3xl">Conteúdos educativos</h2>
+     {/* <section className="site-container py-20 md:py-28">
+        <h2 className="section-title max-w-3xl">noticias educativos</h2>
         <div className="mt-14 grid gap-x-12 gap-y-14 md:grid-cols-3">
           {draftArticles.map((a) => (
             <article key={a.slug} className="editorial-rule pt-6">
@@ -35,12 +32,14 @@ function Page() {
             </article>
           ))}
         </div>
-      </section>
+      </section> */}
 
       <section className="bg-paper py-20 md:py-28">
         <div className="site-container">
-          <Eyebrow>Notícias</Eyebrow>
-          <h2 className="section-title max-w-3xl">Novidades da Lacort</h2>
+          
+         <h2 className="section-title max-w-3xl text-gold-deep uppercase font-extrabold tracking-[0.14em]">
+  Notícias
+</h2>
           <div className="mt-14 grid gap-x-12 gap-y-14 md:grid-cols-3">
             {draftNews.map((n) => (
               <article key={n.slug} className="editorial-rule pt-6">

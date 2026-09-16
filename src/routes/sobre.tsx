@@ -26,23 +26,31 @@ const values = [
 function Page() {
   return (
     <>
+<section className="site-container py-20 md:py-28">
 
-      <section className="site-container py-20 md:py-28">
-         <h2 className="section-title max-w-3xl">Conheça nosso espaço.</h2>
-         <eyebrow>  </eyebrow>
-         <div className="space-y-4">
-        <p>  </p>
-        <p>  </p>
-       
+  <div className="grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
 
-        </div>
-    
-        <div className="image-frame aspect-[16/9] w-full max-w-4xl mx-auto border-8 border-gold rounded-lg overflow-hidden">
-          <img src={"/clinica-lacort.jpg"} alt="Ambiente da Lacort Odontologia Especializada" loading="lazy" />
-       
-        </div>
-        <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
-          <div>
+    {/* TÍTULO */}
+    <div>
+      <h2 className="section-title">
+        Um espaço preparado para cuidar de você.
+      </h2>
+    </div>
+
+    {/* IMAGEM */}
+    <div className="image-frame aspect-[16/9] w-full border-4 border-gold rounded-lg overflow-hidden">
+      <img
+        src="/clinica-lacort.jpg"
+        alt="Ambiente da Lacort Odontologia Especializada"
+        loading="lazy"
+        className="h-full w-full object-cover"
+      />
+    </div>
+
+  </div>
+
+  <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
+    <div>
             <Eyebrow>Nossa proposta</Eyebrow>
             <h2 className="section-title">Odontologia sem pressa.</h2>
           </div>

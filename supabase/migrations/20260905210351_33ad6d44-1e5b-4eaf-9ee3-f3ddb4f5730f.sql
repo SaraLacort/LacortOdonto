@@ -322,7 +322,7 @@ INSERT INTO public.authors (name, slug, biography, profession, registration, is_
 VALUES ('Dra. Sara Lacort', 'dra-sara-lacort', 'Odontologia também é sobre reconstruir confiança. Perfil profissional aguardando complementação e revisão pela clínica.', 'Cirurgiã-dentista e responsável técnica', 'CROSP 155460 SP', true);
 
 INSERT INTO public.categories (kind, name, slug, description) VALUES
-('educational', 'Medo de dentista', 'medo-de-dentista', 'Conteúdos acolhedores para compreender receios e o cuidado odontológico.'),
+('educational', 'Medo de dentista', 'medo-de-dentista', 'noticias acolhedores para compreender receios e o cuidado odontológico.'),
 ('educational', 'Saúde bucal', 'saude-bucal', 'Orientações gerais sobre prevenção e cuidados com o sorriso.'),
 ('educational', 'Implantes', 'implantes', 'Informações educativas sobre avaliação e planejamento de implantes.'),
 ('news', 'Clínica', 'clinica', 'Novidades e acontecimentos da Lacort.'),
@@ -354,5 +354,5 @@ INSERT INTO public.content_items (kind, title, subtitle, slug, excerpt, body, au
 SELECT 'news', 'Novidade da Lacort: título para editar', 'Exemplo de notícia para substituir futuramente', 'novidade-exemplo-lacort', 'Estrutura de notícia preparada para receber uma novidade real da clínica.', '[{"type":"notice","text":"RASCUNHO — CONTEÚDO DE EXEMPLO"},{"type":"paragraph","text":"Edite este texto com uma novidade real, data, contexto e imagem antes de publicar."}]', sara.id, cat.id, 'draft', 'Notícia em edição | Lacort', 'Notícia de exemplo aguardando edição pela equipe da Lacort.' FROM sara, cat;
 
 INSERT INTO public.redirects (from_path, to_path, status_code) VALUES
-('/blog', '/conteudos/tire-suas-duvidas', 301),
-('/noticias', '/conteudos/noticias', 301);
+('/blog', '/noticias/tire-suas-duvidas', 301),
+('/noticias', '/noticias/noticias', 301);

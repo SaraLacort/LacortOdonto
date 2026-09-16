@@ -4,7 +4,7 @@
 - [x] Ativar base de dados e criar modelo seguro
 - [ ] Construir sistema visual e navegação
 - [ ] Construir páginas públicas e tratamentos
-- [ ] Construir conteúdos e buscas
+- [ ] Construir noticias e buscas
 - [ ] Construir contato funcional
 - [ ] Construir autenticação e painel administrativo
 - [ ] Completar SEO, LGPD e redirecionamentos

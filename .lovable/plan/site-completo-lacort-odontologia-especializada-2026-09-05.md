@@ -24,7 +24,7 @@ Construir a plataforma institucional e editorial completa da Lacort, com site p�
 
 ## 2. Site público e jornada do paciente
 Implementar páginas com composição variada e editorial, sem repetição excessiva de cards:
-- `/`: fotografia da Dra. Sara em destaque, posicionamento, tratamentos, medo de dentista, Dra. Sara, ambiente, primeira consulta, espaço preparado para avaliações reais, conteúdos, produção científica e chamada final.
+- `/`: fotografia da Dra. Sara em destaque, posicionamento, tratamentos, medo de dentista, Dra. Sara, ambiente, primeira consulta, espaço preparado para avaliações reais, noticias, produção científica e chamada final.
 - `/sobre`: narrativa institucional, missão, visão e valores em composição editorial.
 - `/clinica`: ambiente, estrutura e localização com a fotografia real enviada.
 - `/dra-sara`: apresentação profissional, história e forma de atendimento; somente dados confirmados.
@@ -39,17 +39,17 @@ Implementar páginas com composição variada e editorial, sem repetição exces
 ## 3. Tratamentos
 - Criar `/tratamentos` como catálogo visual por grandes categorias.
 - Criar páginas individuais para estética, prótese e reabilitação, implantes, endodontia, ortodontia, alinhadores e clínica geral/prevenção.
-- Cada página terá introdução, possíveis indicações sem diagnóstico, processo, considerações, FAQ, conteúdos relacionados e chamada contextual.
+- Cada página terá introdução, possíveis indicações sem diagnóstico, processo, considerações, FAQ, noticias relacionados e chamada contextual.
 - Não criar urgências, preços, promessas ou especialidades não confirmadas; itens ainda sujeitos à confirmação ficarão identificados no painel.
 
-## 4. Conteúdos editoriais
-- Criar `/conteudos` com duas entradas: **Notícias** e **Tire suas dúvidas**.
-- `/conteudos/noticias`: visual de jornal/newsroom, manchete principal, notícias secundárias, arquivo e filtros.
-- `/conteudos/noticias/[slug]`: página editorial completa com fonte externa quando aplicável.
-- `/conteudos/tire-suas-duvidas`: blog educativo com busca, categorias, tags, destaque, recentes e mais lidos.
-- `/conteudos/tire-suas-duvidas/[slug]`: leitura confortável, índice, autoria, datas, referências, relacionados e chamada contextual.
+## 4. noticias editoriais
+- Criar `/noticias` com duas entradas: **Notícias** e **Tire suas dúvidas**.
+- `/noticias/noticias`: visual de jornal/newsroom, manchete principal, notícias secundárias, arquivo e filtros.
+- `/noticias/noticias/[slug]`: página editorial completa com fonte externa quando aplicável.
+- `/noticias/tire-suas-duvidas`: blog educativo com busca, categorias, tags, destaque, recentes e mais lidos.
+- `/noticias/tire-suas-duvidas/[slug]`: leitura confortável, índice, autoria, datas, referências, relacionados e chamada contextual.
 - Criar exemplos solicitados de notícias e artigos como **rascunhos**, claramente marcados “revisão profissional necessária”, para edição futura; nenhum conteúdo médico demonstrativo será publicado automaticamente.
-- Criar redirecionamentos permanentes de `/noticias` e `/blog` para a arquitetura final dentro de `/conteudos`.
+- Criar redirecionamentos permanentes de `/noticias` e `/blog` para a arquitetura final dentro de `/noticias`.
 
 ## 5. Produção científica
 - Criar `/artigos-cientificos` com busca e filtros por autor, ano, tema e tipo.
@@ -67,7 +67,7 @@ Implementar páginas com composição variada e editorial, sem repetição exces
 - Incluir campos e checklist de SEO, direitos autorais, revisão de saúde e autorização de imagens.
 
 ## 7. Dados, segurança e formulários
-- Modelar dados normalizados para configurações, perfis, papéis, páginas, tratamentos, conteúdos, autores, taxonomias, FAQs, mídia, mensagens e redirecionamentos.
+- Modelar dados normalizados para configurações, perfis, papéis, páginas, tratamentos, noticias, autores, taxonomias, FAQs, mídia, mensagens e redirecionamentos.
 - Aplicar regras de acesso: visitantes leem apenas conteúdo publicado; administradores e editores gerenciam conforme o papel; mensagens são privadas.
 - Armazenar uploads em áreas organizadas e seguras, com metadados, texto alternativo e controle de status.
 - Fazer o formulário de contato gravar mensagens reais, com validação, honeypot, limitação de envio e consentimento não pré-marcado.

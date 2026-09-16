@@ -153,7 +153,7 @@ function Index() {
       <section className="home-assurance" aria-label="Diferenciais do atendimento">
         <div className="site-container home-assurance-grid">
           <p><Check /> Atendimento no seu ritmo</p>
-          <p><Check /> Explicação antes de cada etapa</p>
+          <p><Check /> Clareza em cada etapa</p>
           <p><Check /> Planejamento individualizado</p>
         </div>
       </section>

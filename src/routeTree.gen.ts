@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArtigosCientificosRouteImport } from './routes/artigos-cientificos'
 import { Route as ContatoRouteImport } from './routes/contato'
-import { Route as ConteudosRouteImport } from './routes/conteudos'
+import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as PacientesRouteImport } from './routes/pacientes'
 import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
 import { Route as SobreRouteImport } from './routes/sobre'
@@ -35,9 +35,9 @@ const ContatoRoute = ContatoRouteImport.update({
   path: '/contato',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConteudosRoute = ConteudosRouteImport.update({
-  id: '/conteudos',
-  path: '/conteudos',
+const NoticiasRoute = NoticiasRouteImport.update({
+  id: '/noticias',
+  path: '/noticias',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PacientesRoute = PacientesRouteImport.update({
@@ -75,7 +75,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/artigos-cientificos': typeof ArtigosCientificosRoute
   '/contato': typeof ContatoRoute
-  '/conteudos': typeof ConteudosRoute
+  '/noticias': typeof NoticiasRoute
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
@@ -87,7 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/artigos-cientificos': typeof ArtigosCientificosRoute
   '/contato': typeof ContatoRoute
-  '/conteudos': typeof ConteudosRoute
+  '/noticias': typeof NoticiasRoute
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
@@ -100,7 +100,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/artigos-cientificos': typeof ArtigosCientificosRoute
   '/contato': typeof ContatoRoute
-  '/conteudos': typeof ConteudosRoute
+  '/noticias': typeof NoticiasRoute
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
@@ -114,7 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/artigos-cientificos'
     | '/contato'
-    | '/conteudos'
+    | '/noticias'
     | '/pacientes'
     | '/politica-de-privacidade'
     | '/sobre'
@@ -126,7 +126,7 @@ export interface FileRouteTypes {
     | '/'
     | '/artigos-cientificos'
     | '/contato'
-    | '/conteudos'
+    | '/noticias'
     | '/pacientes'
     | '/politica-de-privacidade'
     | '/sobre'
@@ -138,7 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/artigos-cientificos'
     | '/contato'
-    | '/conteudos'
+    | '/noticias'
     | '/pacientes'
     | '/politica-de-privacidade'
     | '/sobre'
@@ -151,7 +151,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArtigosCientificosRoute: typeof ArtigosCientificosRoute
   ContatoRoute: typeof ContatoRoute
-  ConteudosRoute: typeof ConteudosRoute
+  NoticiasRoute: typeof NoticiasRoute
   PacientesRoute: typeof PacientesRoute
   PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
   SobreRoute: typeof SobreRoute
@@ -182,11 +182,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContatoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/conteudos': {
-      id: '/conteudos'
-      path: '/conteudos'
-      fullPath: '/conteudos'
-      preLoaderRoute: typeof ConteudosRouteImport
+    '/noticias': {
+      id: '/noticias'
+      path: '/noticias'
+      fullPath: '/noticias'
+      preLoaderRoute: typeof NoticiasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pacientes': {
@@ -250,7 +250,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArtigosCientificosRoute: ArtigosCientificosRoute,
   ContatoRoute: ContatoRoute,
-  ConteudosRoute: ConteudosRoute,
+  NoticiasRoute: NoticiasRoute,
   PacientesRoute: PacientesRoute,
   PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
   SobreRoute: SobreRoute,

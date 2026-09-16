@@ -23,11 +23,15 @@ const steps = [
 ];
 
 const faqs = [
-  { q: "Preciso levar exames na primeira consulta?", a: "Se você já tiver radiografias ou documentação recente, leve. Caso não tenha, avaliamos o que é necessário durante a consulta." },
-  { q: "Quanto tempo dura a primeira consulta?", a: "Reservamos tempo suficiente para conversar e examinar com calma. A duração varia conforme o caso." },
-  { q: "Vocês atendem convênio?", a: "Consulte a recepção pelo WhatsApp para informações atualizadas sobre formas de atendimento e pagamento." },
+  { q: "Clareamento dental enfraquece os dentes?", a: "O clareamento profissional utiliza agentes específicos e deve ser indicado após avaliação. Sensibilidade pode ocorrer em alguns pacientes, por isso concentração, técnica e acompanhamento precisam ser definidos individualmente." },
+  { q: "Tenho medo de dentista. O que posso fazer?", a: "Conte isso já no primeiro contato. Conhecer seus receios permite planejar a consulta com mais tempo para explicações, pausas e adaptação do atendimento às suas necessidades." },
+  { q: "Qual a diferença entre prótese, dentadura e implante?", a: "São formas diferentes de reabilitar dentes perdidos. Próteses podem ser fixas ou removíveis; a prótese total removível, popularmente chamada de dentadura, substitui os dentes de uma arcada. Já os implantes são estruturas instaladas no osso que podem servir de suporte para diferentes tipos de prótese e mantê-la fixa." },
+  { q: "Quanto tempo dura um implante dentário?", a: "Não existe um prazo único. Higiene bucal, acompanhamento profissional, condições de saúde e hábitos individuais influenciam sua manutenção. O Ministério da Saúde destaca a importância da escovação, fio dental e cuidados ao redor dos implantes." },
+  { q: "Tratamento de canal dói?", a: "O procedimento é realizado com anestesia local. A experiência varia conforme o quadro clínico e pode haver sensibilidade após o atendimento, por isso é importante tomar as medicações prescritas." },
+  { q: "Quando um dente precisa de tratamento de canal?", a: "Dor intensa ou persistente, sensibilidade prolongada, alteração de cor e infecção podem estar associadas a problemas na polpa do dente. A necessidade de canal é determinada após avaliação clínica e, quando necessário, exames de imagem." },
+  { q: "Como saber se preciso fazer uma limpeza dentária?", a: "Acúmulo de tártaro, sangramento gengival, alteração no hálito e sensação de dentes ásperos podem indicar necessidade de avaliação. A presença ou ausência desses sinais, porém, não substitui o exame clínico." },
   { q: "Tenho muito medo de dentista. Como funciona?", a: "Você pode contar isso logo no primeiro contato. O atendimento é conduzido em ritmo mais lento, com explicação de cada passo e pausas quando precisar." },
-  { q: "Posso remarcar minha consulta?", a: "Sim. Avise com antecedência pelo WhatsApp para reorganizarmos a agenda." },
+   { q: "Gengiva sangrando é normal?", a: "Sangramento frequente merece atenção e pode estar relacionado à inflamação gengival, acúmulo de placa ou outras condições. O ideal é identificar a causa antes de iniciar qualquer tratamento." },
 ];
 
 function Page() {
