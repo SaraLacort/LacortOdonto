@@ -28,7 +28,7 @@ function Page() {
     <>
 <section className="site-container py-20 md:py-28">
 
-  <div className="grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+  <div className="grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr]  lg:gap-16">
 
     {/* TÍTULO */}
     <div>
@@ -48,6 +48,7 @@ function Page() {
     </div>
 
   </div>
+
 
   <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
     <div>

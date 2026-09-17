@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ArtigosCientificosRouteImport } from './routes/artigos-cientificos'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as NoticiasRouteImport } from './routes/noticias'
@@ -18,11 +19,20 @@ import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as TratamentosRouteImport } from './routes/tratamentos'
+import { Route as AdminNovaRouteImport } from './routes/admin.nova'
+import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as TratamentosSlugRouteImport } from './routes/tratamentos/$slug'
+import { Route as AdminEditarPostIdRouteImport } from './routes/admin.editar.$postId'
+import { Route as AdminPreviewPostIdRouteImport } from './routes/admin.preview.$postId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArtigosCientificosRoute = ArtigosCientificosRouteImport.update({
@@ -65,53 +75,89 @@ const TratamentosRoute = TratamentosRouteImport.update({
   path: '/tratamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminNovaRoute = AdminNovaRouteImport.update({
+  id: '/nova',
+  path: '/nova',
+  getParentRoute: () => AdminRoute,
+} as any)
+const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => NoticiasRoute,
+} as any)
 const TratamentosSlugRoute = TratamentosSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => TratamentosRoute,
 } as any)
+const AdminEditarPostIdRoute = AdminEditarPostIdRouteImport.update({
+  id: '/editar/$postId',
+  path: '/editar/$postId',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPreviewPostIdRoute = AdminPreviewPostIdRouteImport.update({
+  id: '/preview/$postId',
+  path: '/preview/$postId',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/artigos-cientificos': typeof ArtigosCientificosRoute
   '/contato': typeof ContatoRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/tratamentos': typeof TratamentosRouteWithChildren
+  '/admin/nova': typeof AdminNovaRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/tratamentos/$slug': typeof TratamentosSlugRoute
+  '/admin/editar/$postId': typeof AdminEditarPostIdRoute
+  '/admin/preview/$postId': typeof AdminPreviewPostIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/artigos-cientificos': typeof ArtigosCientificosRoute
   '/contato': typeof ContatoRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/tratamentos': typeof TratamentosRouteWithChildren
+  '/admin/nova': typeof AdminNovaRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/tratamentos/$slug': typeof TratamentosSlugRoute
+  '/admin/editar/$postId': typeof AdminEditarPostIdRoute
+  '/admin/preview/$postId': typeof AdminPreviewPostIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/artigos-cientificos': typeof ArtigosCientificosRoute
   '/contato': typeof ContatoRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/tratamentos': typeof TratamentosRouteWithChildren
+  '/admin/nova': typeof AdminNovaRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/tratamentos/$slug': typeof TratamentosSlugRoute
+  '/admin/editar/$postId': typeof AdminEditarPostIdRoute
+  '/admin/preview/$postId': typeof AdminPreviewPostIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/artigos-cientificos'
     | '/contato'
     | '/noticias'
@@ -120,10 +166,15 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
+    | '/admin/nova'
+    | '/noticias/$slug'
     | '/tratamentos/$slug'
+    | '/admin/editar/$postId'
+    | '/admin/preview/$postId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/artigos-cientificos'
     | '/contato'
     | '/noticias'
@@ -132,10 +183,15 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
+    | '/admin/nova'
+    | '/noticias/$slug'
     | '/tratamentos/$slug'
+    | '/admin/editar/$postId'
+    | '/admin/preview/$postId'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/artigos-cientificos'
     | '/contato'
     | '/noticias'
@@ -144,14 +200,19 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
+    | '/admin/nova'
+    | '/noticias/$slug'
     | '/tratamentos/$slug'
+    | '/admin/editar/$postId'
+    | '/admin/preview/$postId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ArtigosCientificosRoute: typeof ArtigosCientificosRoute
   ContatoRoute: typeof ContatoRoute
-  NoticiasRoute: typeof NoticiasRoute
+  NoticiasRoute: typeof NoticiasRouteWithChildren
   PacientesRoute: typeof PacientesRoute
   PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
   SobreRoute: typeof SobreRoute
@@ -166,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/artigos-cientificos': {
@@ -224,6 +292,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TratamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/nova': {
+      id: '/admin/nova'
+      path: '/nova'
+      fullPath: '/admin/nova'
+      preLoaderRoute: typeof AdminNovaRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/noticias/$slug': {
+      id: '/noticias/$slug'
+      path: '/$slug'
+      fullPath: '/noticias/$slug'
+      preLoaderRoute: typeof NoticiasSlugRouteImport
+      parentRoute: typeof NoticiasRoute
+    }
     '/tratamentos/$slug': {
       id: '/tratamentos/$slug'
       path: '/$slug'
@@ -231,8 +313,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TratamentosSlugRouteImport
       parentRoute: typeof TratamentosRoute
     }
+    '/admin/editar/$postId': {
+      id: '/admin/editar/$postId'
+      path: '/editar/$postId'
+      fullPath: '/admin/editar/$postId'
+      preLoaderRoute: typeof AdminEditarPostIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/preview/$postId': {
+      id: '/admin/preview/$postId'
+      path: '/preview/$postId'
+      fullPath: '/admin/preview/$postId'
+      preLoaderRoute: typeof AdminPreviewPostIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminNovaRoute: typeof AdminNovaRoute
+  AdminEditarPostIdRoute: typeof AdminEditarPostIdRoute
+  AdminPreviewPostIdRoute: typeof AdminPreviewPostIdRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminNovaRoute: AdminNovaRoute,
+  AdminEditarPostIdRoute: AdminEditarPostIdRoute,
+  AdminPreviewPostIdRoute: AdminPreviewPostIdRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface NoticiasRouteChildren {
+  NoticiasSlugRoute: typeof NoticiasSlugRoute
+}
+
+const NoticiasRouteChildren: NoticiasRouteChildren = {
+  NoticiasSlugRoute: NoticiasSlugRoute,
+}
+
+const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
+  NoticiasRouteChildren,
+)
 
 interface TratamentosRouteChildren {
   TratamentosSlugRoute: typeof TratamentosSlugRoute
@@ -248,9 +370,10 @@ const TratamentosRouteWithChildren = TratamentosRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   ArtigosCientificosRoute: ArtigosCientificosRoute,
   ContatoRoute: ContatoRoute,
-  NoticiasRoute: NoticiasRoute,
+  NoticiasRoute: NoticiasRouteWithChildren,
   PacientesRoute: PacientesRoute,
   PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
   SobreRoute: SobreRoute,
