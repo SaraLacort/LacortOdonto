@@ -16,6 +16,7 @@ import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as PacientesRouteImport } from './routes/pacientes'
 import { Route as PoliticaDePrivacidadeRouteImport } from './routes/politica-de-privacidade'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosDeUsoRouteImport } from './routes/termos-de-uso'
 import { Route as TratamentosRouteImport } from './routes/tratamentos'
@@ -58,6 +59,11 @@ const PacientesRoute = PacientesRouteImport.update({
 const PoliticaDePrivacidadeRoute = PoliticaDePrivacidadeRouteImport.update({
   id: '/politica-de-privacidade',
   path: '/politica-de-privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/noticias': typeof NoticiasRouteWithChildren
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/tratamentos': typeof TratamentosRouteWithChildren
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/noticias': typeof NoticiasRouteWithChildren
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/tratamentos': typeof TratamentosRouteWithChildren
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/noticias': typeof NoticiasRouteWithChildren
   '/pacientes': typeof PacientesRoute
   '/politica-de-privacidade': typeof PoliticaDePrivacidadeRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos-de-uso': typeof TermosDeUsoRoute
   '/tratamentos': typeof TratamentosRouteWithChildren
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/pacientes'
     | '/politica-de-privacidade'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/pacientes'
     | '/politica-de-privacidade'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/pacientes'
     | '/politica-de-privacidade'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos-de-uso'
     | '/tratamentos'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   NoticiasRoute: typeof NoticiasRouteWithChildren
   PacientesRoute: typeof PacientesRoute
   PoliticaDePrivacidadeRoute: typeof PoliticaDePrivacidadeRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosDeUsoRoute: typeof TermosDeUsoRoute
   TratamentosRoute: typeof TratamentosRouteWithChildren
@@ -269,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/politica-de-privacidade'
       fullPath: '/politica-de-privacidade'
       preLoaderRoute: typeof PoliticaDePrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -376,6 +396,7 @@ const rootRouteChildren: RootRouteChildren = {
   NoticiasRoute: NoticiasRouteWithChildren,
   PacientesRoute: PacientesRoute,
   PoliticaDePrivacidadeRoute: PoliticaDePrivacidadeRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   TermosDeUsoRoute: TermosDeUsoRoute,
   TratamentosRoute: TratamentosRouteWithChildren,

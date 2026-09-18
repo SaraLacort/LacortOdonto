@@ -12,28 +12,62 @@ import { Button } from "@/components/ui/button";
 import { clinic, treatments, whatsappUrl } from "@/lib/site-data";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Dentista na Vila Formosa | Lacort Odontologia Especializada" },
-      {
-        name: "description",
-        content:
-          "Atendimento odontológico humanizado na Vila Formosa, São Paulo. Avaliação cuidadosa, explicações claras e tratamentos planejados no seu tempo.",
-      },
-      {
-        property: "og:title",
-        content: "Lacort Odontologia — cuidado sem pressa e sem julgamentos",
-      },
-      {
-        property: "og:description",
-        content:
-          "Atendimento odontológico humanizado na Vila Formosa, com escuta, clareza e planejamento individualizado.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Index,
+head: () => ({
+  meta: [
+    {
+      title: "Dentista na Vila Formosa | Lacort Odonto",
+    },
+    {
+      name: "description",
+      content:
+        "Atendimento odontológico na Vila Formosa, São Paulo, com avaliação cuidadosa, explicações claras e planejamento individualizado.",
+    },
+
+    // Open Graph
+    {
+      property: "og:title",
+      content: "Dentista na Vila Formosa | Lacort Odonto",
+    },
+    {
+      property: "og:description",
+      content:
+        "Atendimento odontológico na Vila Formosa, São Paulo, com escuta, clareza e planejamento individualizado.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://lacortodonto.com.br/",
+    },
+
+    // Twitter / compartilhamento
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Dentista na Vila Formosa | Lacort Odonto",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Atendimento odontológico na Vila Formosa, São Paulo, com escuta, clareza e planejamento individualizado.",
+    },
+  ],
+
+  links: [
+    {
+      rel: "canonical",
+      href: "https://lacortodonto.com.br/",
+    },
+  ],
+}),  
+
+component: Index,
+
 });
 
 const reasons = [

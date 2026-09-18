@@ -5,38 +5,62 @@ import { FinalCta } from '@/components/page-elements'
 import { supabase } from '@/lib/supabase'
 
 export const Route = createFileRoute('/noticias')({
-  head: () => ({
-    meta: [
-      {
-        title:
-          'Conteúdos sobre Saúde Bucal — Lacort Odontologia Especializada',
-      },
-      {
-        name: 'description',
-        content:
-          'Informações sobre saúde bucal, tratamentos odontológicos, dúvidas frequentes e novidades da Lacort Odontologia Especializada.',
-      },
-      {
-        property: 'og:title',
-        content:
-          'Conteúdos — Lacort Odontologia Especializada',
-      },
-      {
-        property: 'og:description',
-        content:
-          'Informação clara sobre saúde bucal, tratamentos e cuidados odontológicos.',
-      },
-      {
-        property: 'og:type',
-        content: 'website',
-      },
-      {
-        name: 'twitter:card',
-        content: 'summary_large_image',
-      },
-    ],
-  }),
-  component: NoticiasPage,
+head: () => ({
+  meta: [
+    {
+      title: "Saúde Bucal e Odontologia | Lacort Odonto",
+    },
+    {
+      name: "description",
+      content:
+        "Conteúdos sobre saúde bucal, tratamentos odontológicos, prevenção e dúvidas frequentes preparados pela Lacort Odonto.",
+    },
+
+    // Open Graph
+    {
+      property: "og:title",
+      content: "Saúde Bucal e Odontologia | Lacort Odonto",
+    },
+    {
+      property: "og:description",
+      content:
+        "Informações sobre saúde bucal, tratamentos, prevenção e cuidados odontológicos.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://lacortodonto.com.br/noticias",
+    },
+
+    // Twitter
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Saúde Bucal e Odontologia | Lacort Odonto",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Informações sobre saúde bucal, tratamentos, prevenção e cuidados odontológicos.",
+    },
+  ],
+
+  links: [
+    {
+      rel: "canonical",
+      href: "https://lacortodonto.com.br/noticias",
+    },
+  ],
+}),
+
+component: NoticiasPage,
+
 })
 
 type Post = {
@@ -46,6 +70,7 @@ type Post = {
   category: string
   excerpt: string
   cover_image: string | null
+  cover_image_alt: string | null
   featured: boolean
   published_at: string | null
   created_at: string
@@ -76,7 +101,7 @@ function NoticiasPage() {
       const { data, error: postsError } = await supabase
         .from('posts')
         .select(
-          'id, title, slug, category, excerpt, cover_image, featured, published_at, created_at, read_time'
+          'id, title, slug, category, excerpt, cover_image, cover_image_alt, featured, published_at, created_at, read_time'
         )
         .eq('status', 'published')
         .order('published_at', {
@@ -253,7 +278,7 @@ if (!isNoticiasIndex) {
                             src={
                               featuredPost.cover_image
                             }
-                            alt=""
+                            alt={featuredPost.cover_image_alt || featuredPost.title}
                             className="aspect-[16/10] h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
                           />
                         </div>
@@ -369,7 +394,7 @@ function PostCard({
         {post.cover_image ? (
           <img
             src={post.cover_image}
-            alt=""
+           alt={post.cover_image_alt || post.title}
             loading="lazy"
             className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.025]"
           />

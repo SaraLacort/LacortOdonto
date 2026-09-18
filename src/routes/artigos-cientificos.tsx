@@ -2,17 +2,62 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Eyebrow, FinalCta, PageHero } from "@/components/page-elements";
 
 export const Route = createFileRoute("/artigos-cientificos")({
-  head: () => ({
-    meta: [
-      { title: "Produção Científica — Lacort Odontologia Especializada" },
-      { name: "description", content: "Espaço reservado para publicações, participações e produção científica da equipe da Lacort Odontologia." },
-      { property: "og:title", content: "Produção Científica — Lacort Odontologia Especializada" },
-      { property: "og:description", content: "Publicações e produção científica da equipe da Lacort Odontologia." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Page,
+head: () => ({
+  meta: [
+    {
+      title: "Produção Científica | Lacort Odonto",
+    },
+    {
+      name: "description",
+      content:
+        "Produção científica, publicações e trabalhos acadêmicos vinculados à Lacort Odonto.",
+    },
+
+    // Open Graph
+    {
+      property: "og:title",
+      content: "Produção Científica | Lacort Odonto",
+    },
+    {
+      property: "og:description",
+      content:
+        "Publicações, trabalhos acadêmicos e produção científica vinculados à Lacort Odonto.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://lacortodonto.com.br/artigos-cientificos",
+    },
+
+    // Twitter
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Produção Científica | Lacort Odonto",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Publicações, trabalhos acadêmicos e produção científica vinculados à Lacort Odonto.",
+    },
+  ],
+
+  links: [
+    {
+      rel: "canonical",
+      href: "https://lacortodonto.com.br/artigos-cientificos",
+    },
+  ],
+}),
+
+component: Page,
+
 });
 
 function Page() {
@@ -23,7 +68,7 @@ function Page() {
       <section className="site-container py-20 md:py-28">
         <div className="max-w-3xl">
           <Eyebrow>Em preparação</Eyebrow>
-          <h2 className="section-title">Conteúdo a ser cadastrado</h2>
+          <h1 className="section-title">Conteúdo a ser cadastrado</h1>
           <p className="page-intro">
             Nenhuma publicação foi cadastrada até o momento. Este espaço será preenchido apenas com
             produções confirmadas, com título, ano e link de referência quando disponível.

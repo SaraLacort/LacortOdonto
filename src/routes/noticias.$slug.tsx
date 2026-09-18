@@ -116,6 +116,45 @@ export const Route = createFileRoute('/noticias/$slug')({
     const canonicalUrl =
       `https://lacortodonto.com.br/noticias/${post.slug}`
 
+      const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+
+  headline: seoTitle,
+  description: seoDescription,
+
+  url: canonicalUrl,
+
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+
+  datePublished:
+    post.published_at ??
+    post.created_at,
+
+  dateModified:
+    post.updated_at,
+
+  author: {
+    '@type': 'Person',
+    name: 'Dra. Sara Lacort',
+  },
+
+  publisher: {
+    '@type': 'Organization',
+    name: 'Lacort Odonto',
+    url: 'https://lacortodonto.com.br',
+  },
+
+  ...(post.cover_image
+    ? {
+        image: [post.cover_image],
+      }
+    : {}),
+}
+
     const meta = [
       {
         title: seoTitle,
@@ -167,16 +206,23 @@ export const Route = createFileRoute('/noticias/$slug')({
       )
     }
 
-    return {
-      meta,
+return {
+  meta,
 
-      links: [
-        {
-          rel: 'canonical',
-          href: canonicalUrl,
-        },
-      ],
-    }
+  links: [
+    {
+      rel: 'canonical',
+      href: canonicalUrl,
+    },
+  ],
+
+  scripts: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify(articleSchema),
+      },
+    ],
+   }
   },
 
   component: PublicacaoPage,
@@ -217,52 +263,6 @@ function PublicacaoPage() {
     )
   }
 
-const articleUrl =
-  `https://lacortodonto.com.br/noticias/${post.slug}`
-
-const articleSeoTitle =
-  buildSeoTitle(post)
-
-const articleDescription =
-  post.seo_description?.trim() ||
-  post.excerpt.trim()
-
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-
-  headline: articleSeoTitle,
-  description: articleDescription,
-
-  url: articleUrl,
-  mainEntityOfPage: {
-    '@type': 'WebPage',
-    '@id': articleUrl,
-  },
-
-  datePublished:
-    post.published_at ??
-    post.created_at,
-
-  dateModified: post.updated_at,
-
-  author: {
-    '@type': 'Person',
-    name: 'Dra. Sara Lacort',
-  },
-
-  publisher: {
-    '@type': 'Organization',
-    name: 'Lacort Odonto',
-    url: 'https://lacortodonto.com.br',
-  },
-
-  ...(post.cover_image
-    ? {
-        image: [post.cover_image],
-      }
-    : {}),
-}
 
   const publicationDate =
     post.published_at ??
@@ -277,12 +277,7 @@ const articleSchema = {
 
 return (
   <>
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(articleSchema),
-      }}
-    />
+
 
     <main className="bg-paper">
 

@@ -3,17 +3,62 @@ import { Eyebrow, FinalCta, PageHero } from "@/components/page-elements";
 import { treatments } from "@/lib/site-data";
 
 export const Route = createFileRoute("/tratamentos")({
-  head: () => ({
-    meta: [
-      { title: "Tratamentos — Lacort Odontologia Especializada" },
-      { name: "description", content: "Estética, prótese e reabilitação, implantes, endodontia, ortodontia, alinhadores e prevenção na Lacort Odontologia." },
-      { property: "og:title", content: "Tratamentos — Lacort Odontologia Especializada" },
-      { property: "og:description", content: "Áreas de cuidado da Lacort Odontologia Especializada em Vila Formosa, São Paulo." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Page,
+head: () => ({
+  meta: [
+    {
+      title: "Tratamentos Odontológicos na Vila Formosa | Lacort Odonto",
+    },
+    {
+      name: "description",
+      content:
+        "Conheça os tratamentos odontológicos da Lacort Odonto na Vila Formosa, São Paulo: prevenção, estética, prótese, implantes, endodontia, ortodontia e mais.",
+    },
+
+    // Open Graph
+    {
+      property: "og:title",
+      content: "Tratamentos Odontológicos na Vila Formosa | Lacort Odonto",
+    },
+    {
+      property: "og:description",
+      content:
+        "Conheça as áreas de tratamento odontológico disponíveis na Lacort Odonto, na Vila Formosa, São Paulo.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://lacortodonto.com.br/tratamentos",
+    },
+
+    // Twitter
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Tratamentos Odontológicos na Vila Formosa | Lacort Odonto",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Prevenção, estética, prótese, implantes, endodontia, ortodontia e outras áreas de cuidado odontológico.",
+    },
+  ],
+
+  links: [
+    {
+      rel: "canonical",
+      href: "https://lacortodonto.com.br/tratamentos",
+    },
+  ],
+}),
+
+component: Page,
+
 });
 
 function Page() {
@@ -22,7 +67,7 @@ function Page() {
       
 
       <section className="site-container py-20 md:py-28">
-        <h2 className="section-title max-w-3xl">O tratamento certo começa com um bom diagnóstico.</h2>
+        <h1 className="section-title max-w-3xl">O tratamento certo começa com um bom diagnóstico.</h1>
         <Eyebrow> </Eyebrow>
         <div className="grid gap-x-14 gap-y-16 md:grid-cols-2">
           {treatments.map((t, i) => (

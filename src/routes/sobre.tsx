@@ -3,16 +3,59 @@ import { Eyebrow, FinalCta, PageHero } from "@/components/page-elements";
 import { clinic } from "@/lib/site-data";
 
 export const Route = createFileRoute("/sobre")({
-  head: () => ({
-    meta: [
-      { title: "A Clínica — Lacort Odontologia Especializada" },
-      { name: "description", content: "Conheça a Lacort Odontologia Especializada e a Dra. Sara Lacort, em Vila Formosa, São Paulo." },
-      { property: "og:title", content: "A Clínica — Lacort Odontologia Especializada" },
-      { property: "og:description", content: "Conheça a Lacort Odontologia Especializada e a Dra. Sara Lacort, em Vila Formosa, São Paulo." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+head: () => ({
+  meta: [
+    {
+      title: "Clínica Odontológica na Vila Formosa | Lacort Odonto",
+    },
+    {
+      name: "description",
+      content:
+        "Conheça a Lacort Odonto, clínica odontológica na Vila Formosa, São Paulo, com atendimento individualizado, clareza e planejamento em cada etapa.",
+    },
+
+    // Open Graph
+    {
+      property: "og:title",
+      content: "Clínica Odontológica na Vila Formosa | Lacort Odonto",
+    },
+    {
+      property: "og:description",
+      content:
+        "Conheça a Lacort Odonto, na Vila Formosa, São Paulo, e a proposta de um atendimento odontológico individualizado e transparente.",
+    },
+    {
+      property: "og:type",
+      content: "website",
+    },
+    {
+      property: "og:url",
+      content: "https://lacortodonto.com.br/sobre",
+    },
+
+    // Twitter
+    {
+      name: "twitter:card",
+      content: "summary_large_image",
+    },
+    {
+      name: "twitter:title",
+      content: "Clínica Odontológica na Vila Formosa | Lacort Odonto",
+    },
+    {
+      name: "twitter:description",
+      content:
+        "Conheça a Lacort Odonto, clínica odontológica na Vila Formosa, São Paulo.",
+    },
+  ],
+
+  links: [
+    {
+      rel: "canonical",
+      href: "https://lacortodonto.com.br/sobre",
+    },
+  ],
+}),
   component: Page,
 });
 
@@ -32,9 +75,9 @@ function Page() {
 
     {/* TÍTULO */}
     <div>
-      <h2 className="section-title">
+      <h1 className="section-title">
         Um espaço preparado para cuidar de você.
-      </h2>
+      </h1>
     </div>
 
     {/* IMAGEM */}
