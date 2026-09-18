@@ -17,6 +17,9 @@ type PostForm = {
   status: 'draft' | 'published'
   published_at: string | null
   cover_image: string | null
+  seo_title: string | null
+  seo_description: string | null
+  cover_image_alt: string | null
 }
 
 function createSlug(value: string) {
@@ -40,6 +43,26 @@ function EditarPublicacaoPage() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
   const isSavingRef = useRef(false)
+
+  const brandName = 'Lacort Odonto'
+
+const baseSeoTitle =
+  post?.seo_title?.trim() ||
+  post?.title?.trim() ||
+  ''
+
+const alreadyHasBrand =
+  baseSeoTitle.toLowerCase().includes('lacort')
+
+const finalSeoTitle =
+  baseSeoTitle
+    ? alreadyHasBrand
+      ? baseSeoTitle
+      : `${baseSeoTitle} | ${brandName}`
+    : ''
+
+const finalSeoTitleLength =
+  finalSeoTitle.length
 
   // Protege contra fechar a aba, atualizar a página
   // ou sair pelo próprio navegador com alterações não salvas.
@@ -66,7 +89,7 @@ function EditarPublicacaoPage() {
       const { data, error: loadError } = await supabase
         .from('posts')
         .select(
-          'title, slug, category, excerpt, content, status, published_at, cover_image'
+          'title, slug, category, excerpt, content, status, published_at, cover_image, cover_image_alt, seo_title, seo_description'
         )
         .eq('id', Number(postId))
         .single()
@@ -106,20 +129,29 @@ function EditarPublicacaoPage() {
 
     const { error: updateError } = await supabase
       .from('posts')
-      .update({
-        title: post.title.trim(),
-        slug: createSlug(post.title),
-        category: post.category,
-        excerpt: post.excerpt.trim(),
-        content: post.content.trim(),
-        cover_image: post.cover_image,
+    .update({
+     title: post.title.trim(),
+     slug: createSlug(post.title),
+     category: post.category,
+     excerpt: post.excerpt.trim(),
+     content: post.content.trim(),
+     cover_image: post.cover_image,
+     cover_image_alt:
+      post.cover_image_alt?.trim() || null,
+     seo_title:
+      post.seo_title?.trim() || null,
+     seo_description:
+      post.seo_description?.trim() || null,
+ 
         status,
-        published_at:
-          status === 'published'
-            ? post.published_at ?? new Date().toISOString()
-            : null,
-      })
-      .eq('id', Number(postId))
+
+      published_at:
+    status === 'published'
+      ? post.published_at ?? new Date().toISOString()
+      : null,
+})
+
+.eq('id', Number(postId))
 
     if (updateError) {
       console.error(
@@ -304,6 +336,132 @@ function EditarPublicacaoPage() {
             }}
             />
             
+            {/* =====================================================
+    SEO E GOOGLE
+    ===================================================== */}
+
+<div className="border-t border-black/10 pt-8">
+  <div className="mb-6">
+    <p className="text-sm font-semibold text-ink">
+      SEO e Google
+    </p>
+
+    <p className="mt-1 text-xs leading-5 text-ink/45">
+      Essas informações ajudam a apresentar a publicação
+      corretamente nos mecanismos de busca.
+    </p>
+  </div>
+
+  <div className="grid gap-6">
+
+    {/* TÍTULO SEO */}
+<label className="grid gap-2">
+  <span className="text-sm font-medium text-ink">
+    Título para o Google
+  </span>
+
+  <input
+    type="text"
+    value={post.seo_title ?? ''}
+    onChange={(event) => {
+      setPost({
+        ...post,
+        seo_title: event.target.value,
+      })
+
+      setHasUnsavedChanges(true)
+    }}
+    placeholder="Se ficar vazio, será usado o título da publicação."
+    className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+  />
+
+  <span className="text-xs leading-5 text-ink/40">
+    Se ficar vazio, o título normal da publicação será usado.
+    A marca Lacort é acrescentada automaticamente quando necessário.
+  </span>
+
+  {finalSeoTitle && (
+    <div className="mt-2 rounded-md border border-black/10 bg-cream/50 px-4 py-3">
+      <p className="text-xs font-medium text-ink/50">
+        Prévia do título final
+      </p>
+
+      <p className="mt-1 text-sm leading-6 text-ink">
+        {finalSeoTitle}
+      </p>
+
+      <p
+        className={`mt-2 text-xs ${
+          finalSeoTitleLength > 60
+            ? 'text-amber-700'
+            : 'text-ink/40'
+        }`}
+      >
+        {finalSeoTitleLength} caracteres
+        {finalSeoTitleLength > 60
+          ? ' — o título está longo e pode ser exibido de forma reduzida nos resultados de busca.'
+          : ''}
+      </p>
+    </div>
+  )}
+</label>
+
+    {/* DESCRIÇÃO SEO */}
+    <label className="grid gap-2">
+      <span className="text-sm font-medium text-ink">
+        Descrição para o Google
+      </span>
+
+      <textarea
+        value={post.seo_description ?? ''}
+        maxLength={160}
+        rows={3}
+        onChange={(event) => {
+          setPost({
+            ...post,
+            seo_description: event.target.value,
+          })
+
+          setHasUnsavedChanges(true)
+        }}
+        placeholder="Resumo curto e claro do conteúdo da publicação."
+        className="w-full resize-none rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+      />
+
+      <span className="text-xs text-ink/40">
+        {(post.seo_description ?? '').length}/160 caracteres
+      </span>
+    </label>
+
+
+    {/* ALT DA IMAGEM */}
+    <label className="grid gap-2">
+      <span className="text-sm font-medium text-ink">
+        Descrição da imagem de capa
+      </span>
+
+      <input
+        type="text"
+        value={post.cover_image_alt ?? ''}
+        onChange={(event) => {
+          setPost({
+            ...post,
+            cover_image_alt: event.target.value,
+          })
+
+          setHasUnsavedChanges(true)
+        }}
+        placeholder="Ex.: Atendimento odontológico na Lacort Odontologia Especializada"
+        className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+      />
+
+      <span className="text-xs leading-5 text-ink/40">
+        Descreva brevemente o que aparece na imagem.
+      </span>
+    </label>
+
+  </div>
+</div>
 
           {error && (
             <p className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

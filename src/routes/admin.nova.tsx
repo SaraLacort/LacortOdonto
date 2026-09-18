@@ -28,6 +28,26 @@ function NovaPublicacaoPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [coverImage, setCoverImage] = useState<string | null>(null)
+  const [seoTitle, setSeoTitle] = useState('')
+  const [seoDescription, setSeoDescription] = useState('')
+  const [coverImageAlt, setCoverImageAlt] = useState('')
+  const brandName = 'Lacort Odonto'
+
+const baseSeoTitle =
+  seoTitle.trim() || title.trim()
+
+const alreadyHasBrand =
+  baseSeoTitle.toLowerCase().includes('lacort')
+
+const finalSeoTitle =
+  baseSeoTitle
+    ? alreadyHasBrand
+      ? baseSeoTitle
+      : `${baseSeoTitle} | ${brandName}`
+    : ''
+
+const finalSeoTitleLength =
+  finalSeoTitle.length
 
 
   async function handleSaveDraft(event: React.FormEvent<HTMLFormElement>) {
@@ -58,6 +78,9 @@ function NovaPublicacaoPage() {
         excerpt: excerpt.trim(),
         content: content.trim(),
         cover_image: coverImage,
+        seo_title: seoTitle.trim() || null,
+        seo_description: seoDescription.trim() || null,
+        cover_image_alt: coverImageAlt.trim() || null,
         status: 'draft',
         featured: false,
       })
@@ -188,6 +211,112 @@ function NovaPublicacaoPage() {
   value={content}
   onChange={setContent}
 />
+
+
+<div className="border-t border-black/10 pt-8">
+  <div className="mb-6">
+    <p className="text-sm font-semibold text-ink">
+      SEO e Google
+    </p>
+
+    <p className="mt-1 text-xs leading-5 text-ink/45">
+      Essas informações ajudam a apresentar a publicação
+      corretamente nos mecanismos de busca.
+    </p>
+  </div>
+
+  <div className="grid gap-6">
+
+<label className="grid gap-2">
+  <span className="text-sm font-medium text-ink">
+    Título para o Google
+  </span>
+
+  <input
+    type="text"
+    value={seoTitle}
+    onChange={(event) =>
+      setSeoTitle(event.target.value)
+    }
+    placeholder="Se ficar vazio, será usado o título da publicação."
+    className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+  />
+
+  <span className="text-xs leading-5 text-ink/40">
+    Se ficar vazio, o título normal da publicação será usado.
+    A marca Lacort é acrescentada automaticamente quando necessário.
+  </span>
+
+  {finalSeoTitle && (
+    <div className="mt-2 rounded-md border border-black/10 bg-cream/50 px-4 py-3">
+      <p className="text-xs font-medium text-ink/50">
+        Prévia do título final
+      </p>
+
+      <p className="mt-1 text-sm leading-6 text-ink">
+        {finalSeoTitle}
+      </p>
+
+      <p
+        className={`mt-2 text-xs ${
+          finalSeoTitleLength > 60
+            ? 'text-amber-700'
+            : 'text-ink/40'
+        }`}
+      >
+        {finalSeoTitleLength} caracteres
+        {finalSeoTitleLength > 60
+          ? ' — o título está longo e pode ser exibido de forma reduzida nos resultados de busca.'
+          : ''}
+      </p>
+    </div>
+  )}
+</label>
+
+    <label className="grid gap-2">
+      <span className="text-sm font-medium text-ink">
+        Descrição para o Google
+      </span>
+
+      <textarea
+        value={seoDescription}
+        maxLength={160}
+        rows={3}
+        onChange={(event) =>
+          setSeoDescription(event.target.value)
+        }
+        placeholder="Resumo curto e claro do conteúdo da publicação."
+        className="w-full resize-none rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+      />
+
+      <span className="text-xs text-ink/40">
+        {seoDescription.length}/160 caracteres
+      </span>
+    </label>
+
+    <label className="grid gap-2">
+      <span className="text-sm font-medium text-ink">
+        Descrição da imagem de capa
+      </span>
+
+      <input
+        type="text"
+        value={coverImageAlt}
+        onChange={(event) =>
+          setCoverImageAlt(event.target.value)
+        }
+        placeholder="Ex.: Atendimento odontológico na Lacort Odontologia Especializada"
+        className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+      />
+
+      <span className="text-xs leading-5 text-ink/40">
+        Descreva brevemente o que aparece na imagem.
+      </span>
+    </label>
+
+  </div>
+</div>
+
 
           {error && (
             <p className="border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

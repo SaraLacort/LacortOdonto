@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import {
   createFileRoute,
   Link,
@@ -6,10 +5,6 @@ import {
 
 import { FinalCta } from '@/components/page-elements'
 import { supabase } from '@/lib/supabase'
-
-export const Route = createFileRoute('/noticias/$slug')({
-  component: PublicacaoPage,
-})
 
 type Post = {
   id: number
@@ -22,84 +17,174 @@ type Post = {
   cover_image_alt: string | null
   published_at: string | null
   created_at: string
+  updated_at: string
   read_time: number | null
+  seo_title: string | null
+  seo_description: string | null
 }
 
-function PublicacaoPage() {
-  const { slug } = Route.useParams()
+function buildSeoTitle(post: Post) {
+  const baseTitle =
+    post.seo_title?.trim() ||
+    post.title.trim()
 
-  const [post, setPost] = useState<Post | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const alreadyHasBrand =
+    baseTitle.toLowerCase().includes('lacort')
 
-  useEffect(() => {
-    async function loadPost() {
-      setLoading(true)
-      setError('')
+  return alreadyHasBrand
+    ? baseTitle
+    : `${baseTitle} | Lacort Odonto`
+}
 
-      const { data, error: postError } =
-        await supabase
-          .from('posts')
-          .select(
-            `
-              id,
-              title,
-              slug,
-              category,
-              excerpt,
-              content,
-              cover_image,
-              cover_image_alt,
-              published_at,
-              created_at,
-              read_time
-            `
-          )
-          .eq('slug', slug)
-          .eq('status', 'published')
-          .maybeSingle()
+export const Route = createFileRoute('/noticias/$slug')({
+  loader: async ({ params }) => {
+    const { data, error } = await supabase
+      .from('posts')
+      .select(
+        `
+          id,
+          title,
+          slug,
+          category,
+          excerpt,
+          content,
+          cover_image,
+          cover_image_alt,
+          published_at,
+          created_at,
+          updated_at,
+          read_time,
+          seo_title,
+          seo_description
+        `
+      )
+      .eq('slug', params.slug)
+      .eq('status', 'published')
+      .maybeSingle()
 
-      if (postError) {
-        console.error(
-          'Erro ao carregar publicação:',
-          postError
-        )
+    if (error) {
+      console.error(
+        'Erro ao carregar publicação:',
+        error
+      )
 
-        setError(
-          'Não foi possível carregar este conteúdo.'
-        )
-
-        setLoading(false)
-        return
+      return {
+        post: null as Post | null,
+        error:
+          'Não foi possível carregar este conteúdo.',
       }
-
-      if (!data) {
-        setError(
-          'Este conteúdo não foi encontrado ou não está publicado.'
-        )
-
-        setLoading(false)
-        return
-      }
-
-      setPost(data as Post)
-      setLoading(false)
     }
 
-    void loadPost()
-  }, [slug])
+    if (!data) {
+      return {
+        post: null as Post | null,
+        error:
+          'Este conteúdo não foi encontrado ou não está publicado.',
+      }
+    }
 
-  if (loading) {
-    return (
-      <main className="min-h-[70vh] bg-paper">
-        <div className="site-container flex min-h-[70vh] items-center justify-center">
-          <p className="text-muted-foreground">
-            Carregando conteúdo...
-          </p>
-        </div>
-      </main>
-    )
-  }
+    return {
+      post: data as Post,
+      error: '',
+    }
+  },
+
+  head: ({ loaderData }) => {
+    const post = loaderData?.post
+
+    if (!post) {
+      return {
+        meta: [
+          {
+            title:
+              'Conteúdo não encontrado | Lacort Odonto ',
+          },
+          {
+            name: 'robots',
+            content: 'noindex, nofollow',
+          },
+        ],
+      }
+    }
+
+    const seoTitle = buildSeoTitle(post)
+
+    const seoDescription =
+      post.seo_description?.trim() ||
+      post.excerpt.trim()
+
+    const canonicalUrl =
+      `https://lacortodonto.com.br/noticias/${post.slug}`
+
+    const meta = [
+      {
+        title: seoTitle,
+      },
+      {
+        name: 'description',
+        content: seoDescription,
+      },
+      {
+        property: 'og:title',
+        content: seoTitle,
+      },
+      {
+        property: 'og:description',
+        content: seoDescription,
+      },
+      {
+        property: 'og:type',
+        content: 'article',
+      },
+      {
+        property: 'og:url',
+        content: canonicalUrl,
+      },
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
+      {
+        name: 'twitter:title',
+        content: seoTitle,
+      },
+      {
+        name: 'twitter:description',
+        content: seoDescription,
+      },
+    ]
+
+    if (post.cover_image) {
+      meta.push(
+        {
+          property: 'og:image',
+          content: post.cover_image,
+        },
+        {
+          name: 'twitter:image',
+          content: post.cover_image,
+        }
+      )
+    }
+
+    return {
+      meta,
+
+      links: [
+        {
+          rel: 'canonical',
+          href: canonicalUrl,
+        },
+      ],
+    }
+  },
+
+  component: PublicacaoPage,
+})
+
+function PublicacaoPage() {
+  const { post, error } =
+    Route.useLoaderData()
 
   if (!post) {
     return (
@@ -132,8 +217,56 @@ function PublicacaoPage() {
     )
   }
 
+const articleUrl =
+  `https://lacortodonto.com.br/noticias/${post.slug}`
+
+const articleSeoTitle =
+  buildSeoTitle(post)
+
+const articleDescription =
+  post.seo_description?.trim() ||
+  post.excerpt.trim()
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+
+  headline: articleSeoTitle,
+  description: articleDescription,
+
+  url: articleUrl,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': articleUrl,
+  },
+
+  datePublished:
+    post.published_at ??
+    post.created_at,
+
+  dateModified: post.updated_at,
+
+  author: {
+    '@type': 'Person',
+    name: 'Dra. Sara Lacort',
+  },
+
+  publisher: {
+    '@type': 'Organization',
+    name: 'Lacort Odonto',
+    url: 'https://lacortodonto.com.br',
+  },
+
+  ...(post.cover_image
+    ? {
+        image: [post.cover_image],
+      }
+    : {}),
+}
+
   const publicationDate =
-    post.published_at ?? post.created_at
+    post.published_at ??
+    post.created_at
 
   const formattedDate =
     new Intl.DateTimeFormat('pt-BR', {
@@ -142,9 +275,16 @@ function PublicacaoPage() {
       year: 'numeric',
     }).format(new Date(publicationDate))
 
-  return (
-    <>
-      <main className="bg-paper">
+return (
+  <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(articleSchema),
+      }}
+    />
+
+    <main className="bg-paper">
 
         {/* CABEÇALHO */}
         <section className="border-b border-ink/10">
@@ -209,7 +349,13 @@ function PublicacaoPage() {
         {/* ARTIGO */}
         <article className="site-container py-16 md:py-24">
           <div className="mx-auto max-w-3xl">
-          <article className="article-content"dangerouslySetInnerHTML={{__html: post.content, }} />
+
+            <div
+              className="article-content"
+              dangerouslySetInnerHTML={{
+                __html: post.content,
+              }}
+            />
 
             <div className="mt-16 border-t border-ink/10 pt-8">
               <p className="text-sm leading-7 text-muted-foreground">
@@ -225,6 +371,7 @@ function PublicacaoPage() {
                 ← Ver todos os conteúdos
               </Link>
             </div>
+
           </div>
         </article>
 
