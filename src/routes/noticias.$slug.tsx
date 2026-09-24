@@ -291,16 +291,16 @@ return (
               ← Conteúdos
             </Link>
 
-            <div className="mx-auto mt-12 max-w-4xl text-center">
+            <div className="mx-auto mt-12 min-w-0 max-w-4xl overflow-hidden text-center">
               <p className="eyebrow">
                 {post.category}
               </p>
 
-              <h1 className="mt-5 text-4xl leading-[1.08] text-ink md:text-6xl">
+              <h1 className="mt-5 max-w-full break-words text-4xl leading-[1.08] text-ink [overflow-wrap:anywhere] md:text-6xl">
                 {post.title}
               </h1>
 
-              <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-muted-foreground md:text-xl">
+              <p className="mx-auto mt-7 max-w-3xl break-words text-lg leading-8 text-muted-foreground [overflow-wrap:anywhere] md:text-xl">
                 {post.excerpt}
               </p>
 
@@ -342,15 +342,15 @@ return (
         )}
 
         {/* ARTIGO */}
-        <article className="site-container py-16 md:py-24">
-          <div className="mx-auto max-w-3xl">
+<article className="site-container min-w-0 overflow-hidden py-16 md:py-24">
+  <div className="mx-auto min-w-0 max-w-3xl overflow-hidden">
 
-            <div
-              className="article-content"
-              dangerouslySetInnerHTML={{
-                __html: post.content,
-              }}
-            />
+    <div
+      className="article-content min-w-0 max-w-full overflow-hidden [overflow-wrap:anywhere] [word-break:break-word]"
+      dangerouslySetInnerHTML={{
+        __html: post.content,
+      }}
+    />
 
             <div className="mt-16 border-t border-ink/10 pt-8">
               <p className="text-sm leading-7 text-muted-foreground">

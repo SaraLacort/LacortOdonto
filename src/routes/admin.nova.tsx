@@ -31,6 +31,7 @@ function NovaPublicacaoPage() {
   const [seoTitle, setSeoTitle] = useState('')
   const [seoDescription, setSeoDescription] = useState('')
   const [coverImageAlt, setCoverImageAlt] = useState('')
+  const [sources, setSources] = useState('')
   const brandName = 'Lacort Odonto'
 
 const baseSeoTitle =
@@ -81,6 +82,7 @@ const finalSeoTitleLength =
         seo_title: seoTitle.trim() || null,
         seo_description: seoDescription.trim() || null,
         cover_image_alt: coverImageAlt.trim() || null,
+        sources: sources.trim() || null,
         status: 'draft',
         featured: false,
       })
@@ -130,7 +132,7 @@ const finalSeoTitleLength =
 
         <form
           onSubmit={handleSaveDraft}
-          className="mt-10 grid gap-8 border border-ink/10 bg-white p-8"
+         className="admin-post-form mt-10 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 border border-ink/10 bg-white p-8"
         >
           <div>
             <label
@@ -147,11 +149,11 @@ const finalSeoTitleLength =
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               placeholder="Ex.: Quando é necessário fazer um implante dentário?"
-              className="w-full border border-ink/20 px-4 py-3 outline-none transition focus:border-gold-deep"
+              className="block w-full min-w-0 max-w-full border border-ink/20 px-4 py-3 outline-none transition focus:border-gold-deep"
             />
 
             {title && (
-              <p className="mt-2 text-xs text-ink/40">
+              <p className="mt-2 max-w-full break-words text-xs text-ink/40 [overflow-wrap:anywhere]">
                 /noticias/{createSlug(title)}
               </p>
             )}
@@ -178,29 +180,29 @@ const finalSeoTitleLength =
             </select>
           </div>
 
-          <div>
-            <label
-              htmlFor="excerpt"
-              className="mb-2 block text-sm font-medium text-ink"
-            >
-              Resumo
-            </label>
+<div className="min-w-0">
+  <label
+    htmlFor="excerpt"
+    className="mb-2 block text-sm font-medium text-ink"
+  >
+    Resumo
+  </label>
 
-            <textarea
-              id="excerpt"
-              required
-              rows={3}
-              maxLength={300}
-              value={excerpt}
-              onChange={(event) => setExcerpt(event.target.value)}
-              placeholder="Um pequeno resumo que aparecerá no card da matéria."
-              className="w-full resize-y border border-ink/20 px-4 py-3 outline-none transition focus:border-gold-deep"
-            />
+  <textarea
+    id="excerpt"
+    required
+    rows={3}
+    maxLength={300}
+    value={excerpt}
+    onChange={(event) => setExcerpt(event.target.value)}
+    placeholder="Um pequeno resumo que aparecerá no card da matéria."
+    className="block w-full min-w-0 max-w-full resize-y whitespace-pre-wrap break-words border border-ink/20 px-4 py-3 [overflow-wrap:anywhere] outline-none transition focus:border-gold-deep"
+  />
 
-            <p className="mt-2 text-xs text-ink/40">
-              {excerpt.length}/300 caracteres
-            </p>
-          </div>
+  <p className="mt-2 text-xs text-ink/40">
+    {excerpt.length}/300 caracteres
+  </p>
+</div>
 
 <PostCoverImage
   value={coverImage}
@@ -212,6 +214,37 @@ const finalSeoTitleLength =
   onChange={setContent}
 />
 
+{/* =====================================================
+    FONTES E REFERÊNCIAS
+    ===================================================== */}
+
+<div className="min-w-0 border-t border-black/10 pt-8">
+  <div className="mb-4">
+    <p className="text-sm font-semibold text-ink">
+      Fontes e referências
+    </p>
+
+    <p className="mt-1 text-xs leading-5 text-ink/45">
+      Informe as fontes utilizadas na elaboração do conteúdo.
+      Digite uma referência por linha.
+    </p>
+  </div>
+
+  <textarea
+    value={sources}
+    rows={5}
+    onChange={(event) => setSources(event.target.value)}
+    placeholder={`Ex.:
+Ministério da Saúde. Título da publicação.
+Sociedade Brasileira de Periodontologia. Título da diretriz.
+https://exemplo.com.br`}
+    className="block w-full min-w-0 max-w-full resize-y whitespace-pre-wrap break-words rounded-md border border-black/20 bg-white px-4 py-3 text-sm leading-7 [overflow-wrap:anywhere] outline-none focus:border-gold-deep"
+  />
+
+  <p className="mt-2 text-xs leading-5 text-ink/40">
+    Campo opcional. O bloco de referências só aparecerá no artigo quando houver conteúdo preenchido.
+  </p>
+</div>
 
 <div className="border-t border-black/10 pt-8">
   <div className="mb-6">
@@ -232,15 +265,16 @@ const finalSeoTitleLength =
     Título para o Google
   </span>
 
-  <input
-    type="text"
-    value={seoTitle}
-    onChange={(event) =>
-      setSeoTitle(event.target.value)
-    }
-    placeholder="Se ficar vazio, será usado o título da publicação."
-    className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
-  />
+<input
+  type="text"
+  value={seoTitle}
+  maxLength={45}
+  onChange={(event) =>
+    setSeoTitle(event.target.value)
+  }
+  placeholder="Se ficar vazio, será usado o título da publicação."
+  className="block w-full min-w-0 max-w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+/>
 
   <span className="text-xs leading-5 text-ink/40">
     Se ficar vazio, o título normal da publicação será usado.
@@ -253,7 +287,7 @@ const finalSeoTitleLength =
         Prévia do título final
       </p>
 
-      <p className="mt-1 text-sm leading-6 text-ink">
+      <p className="mt-1 max-w-full break-words text-sm leading-6 text-ink [overflow-wrap:anywhere]">
         {finalSeoTitle}
       </p>
 
@@ -286,9 +320,8 @@ const finalSeoTitleLength =
           setSeoDescription(event.target.value)
         }
         placeholder="Resumo curto e claro do conteúdo da publicação."
-        className="w-full resize-none rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
-      />
-
+        className="block w-full min-w-0 max-w-full resize-y whitespace-pre-wrap break-words rounded-md border border-black/20 bg-white px-4 py-3 [overflow-wrap:anywhere] outline-none focus:border-black/50"
+/>
       <span className="text-xs text-ink/40">
         {seoDescription.length}/160 caracteres
       </span>
@@ -306,7 +339,7 @@ const finalSeoTitleLength =
           setCoverImageAlt(event.target.value)
         }
         placeholder="Ex.: Atendimento odontológico na Lacort Odontologia Especializada"
-        className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+        className="block w-full min-w-0 max-w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
       />
 
       <span className="text-xs leading-5 text-ink/40">

@@ -35,7 +35,7 @@ export function PostEditor({
     editorProps: {
       attributes: {
         class:
-          'post-editor-content min-h-[420px] px-6 py-6 text-ink outline-none',
+          'post-editor-content min-h-[500px] w-full min-w-0 max-w-full px-6 py-6 text-ink outline-none',
       },
     },
 
@@ -100,7 +100,7 @@ export function PostEditor({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0 max-w-full">
 
       {/* TÍTULO DO CAMPO */}
       <div className="mb-2">
@@ -113,7 +113,7 @@ export function PostEditor({
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-md border border-black/20 bg-white">
+      <div className="w-full min-w-0 max-w-full overflow-hidden rounded-md border border-black/20 bg-white">
 
         {/* TOOLBAR */}
         <div className="flex flex-wrap items-center gap-2 border-b border-black/15 bg-[#f3eee7] p-3">
@@ -310,9 +310,12 @@ export function PostEditor({
         </div>
 
         {/* ÁREA DO EDITOR */}
-        <div className="bg-white">
-          <EditorContent editor={editor} />
-        </div>
+<div className="h-[500px] w-full min-w-0 max-w-full overflow-y-auto overflow-x-hidden bg-white">
+  <EditorContent
+    editor={editor}
+    className="w-full min-w-0 max-w-full"
+  />
+</div>
       </div>
 
       <p className="mt-2 text-xs text-ink/40">

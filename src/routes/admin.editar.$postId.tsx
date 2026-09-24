@@ -17,6 +17,7 @@ type PostForm = {
   status: 'draft' | 'published'
   published_at: string | null
   cover_image: string | null
+  sources: string | null
   seo_title: string | null
   seo_description: string | null
   cover_image_alt: string | null
@@ -89,7 +90,7 @@ const finalSeoTitleLength =
       const { data, error: loadError } = await supabase
         .from('posts')
         .select(
-          'title, slug, category, excerpt, content, status, published_at, cover_image, cover_image_alt, seo_title, seo_description'
+          'title, slug, category, excerpt, content, status, published_at, cover_image, cover_image_alt, seo_title, seo_description, sources'
         )
         .eq('id', Number(postId))
         .single()
@@ -142,6 +143,9 @@ const finalSeoTitleLength =
       post.seo_title?.trim() || null,
      seo_description:
       post.seo_description?.trim() || null,
+
+      sources:
+  post.sources?.trim() || null,
  
         status,
 
@@ -232,7 +236,7 @@ const finalSeoTitleLength =
           )}
         </div>
 
-        <div className="mt-10 grid gap-8 border border-ink/10 bg-white p-8">
+        <div className="admin-post-form mt-10 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 border border-ink/10 bg-white p-8">
           <div>
             <label
               htmlFor="edit-title"
@@ -252,10 +256,10 @@ const finalSeoTitleLength =
 
                 setHasUnsavedChanges(true)
               }}
-              className="w-full border border-ink/20 px-4 py-3 outline-none focus:border-gold-deep"
+              className="block w-full min-w-0 max-w-full border border-ink/20 px-4 py-3 outline-none focus:border-gold-deep"
             />
 
-            <p className="mt-2 text-xs text-ink/40">
+            <p className="mt-2 max-w-full break-words text-xs text-ink/40 [overflow-wrap:anywhere]">
               /noticias/{createSlug(post.title)}
             </p>
           </div>
@@ -279,7 +283,7 @@ const finalSeoTitleLength =
 
                 setHasUnsavedChanges(true)
               }}
-              className="w-full border border-ink/20 bg-white px-4 py-3 outline-none focus:border-gold-deep"
+              className="block w-full min-w-0 max-w-full border border-ink/20 bg-white px-4 py-3 outline-none focus:border-gold-deep"
             >
               <option>Saúde Bucal</option>
               <option>Tratamentos</option>
@@ -309,7 +313,7 @@ const finalSeoTitleLength =
 
                 setHasUnsavedChanges(true)
               }}
-              className="w-full resize-y border border-ink/20 px-4 py-3 outline-none focus:border-gold-deep"
+              className="block w-full min-w-0 max-w-full resize-y whitespace-pre-wrap break-words border border-ink/20 px-4 py-3 [overflow-wrap:anywhere] outline-none focus:border-gold-deep"
             />
 
             <p className="mt-2 text-xs text-ink/40">
@@ -337,6 +341,45 @@ const finalSeoTitleLength =
             />
             
             {/* =====================================================
+    FONTES E REFERÊNCIAS
+    ===================================================== */}
+
+<div className="min-w-0 border-t border-black/10 pt-8">
+  <div className="mb-4">
+    <p className="text-sm font-semibold text-ink">
+      Fontes e referências
+    </p>
+
+    <p className="mt-1 text-xs leading-5 text-ink/45">
+      Informe as fontes utilizadas na elaboração do conteúdo.
+      Digite uma referência por linha.
+    </p>
+  </div>
+
+  <textarea
+    value={post.sources ?? ''}
+    rows={5}
+    onChange={(event) => {
+      setPost({
+        ...post,
+        sources: event.target.value,
+      })
+
+      setHasUnsavedChanges(true)
+    }}
+    placeholder={`Ex.:
+Ministério da Saúde. Título da publicação.
+Sociedade Brasileira de Periodontologia. Título da diretriz.
+https://exemplo.com.br`}
+    className="block w-full min-w-0 max-w-full resize-y whitespace-pre-wrap break-words rounded-md border border-black/20 bg-white px-4 py-3 text-sm leading-7 [overflow-wrap:anywhere] outline-none focus:border-gold-deep"
+  />
+
+  <p className="mt-2 text-xs leading-5 text-ink/40">
+    Campo opcional. O bloco de referências só aparecerá no artigo quando houver conteúdo preenchido.
+  </p>
+</div>
+
+            {/* =====================================================
     SEO E GOOGLE
     ===================================================== */}
 
@@ -360,20 +403,22 @@ const finalSeoTitleLength =
     Título para o Google
   </span>
 
-  <input
-    type="text"
-    value={post.seo_title ?? ''}
-    onChange={(event) => {
-      setPost({
-        ...post,
-        seo_title: event.target.value,
-      })
+ <input
+  type="text"
+  value={post.seo_title ?? ''}
+  maxLength={45}
+  onChange={(event) => {
+    setPost({
+      ...post,
+      seo_title: event.target.value,
+    })
 
-      setHasUnsavedChanges(true)
-    }}
-    placeholder="Se ficar vazio, será usado o título da publicação."
-    className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
-  />
+    setHasUnsavedChanges(true)
+  }}
+  placeholder="Se ficar vazio, será usado o título da publicação."
+  className="block w-full min-w-0 max-w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+/>
+
 
   <span className="text-xs leading-5 text-ink/40">
     Se ficar vazio, o título normal da publicação será usado.
@@ -386,7 +431,7 @@ const finalSeoTitleLength =
         Prévia do título final
       </p>
 
-      <p className="mt-1 text-sm leading-6 text-ink">
+      <p className="mt-1 max-w-full break-words text-sm leading-6 text-ink [overflow-wrap:anywhere]">
         {finalSeoTitle}
       </p>
 
@@ -425,7 +470,7 @@ const finalSeoTitleLength =
           setHasUnsavedChanges(true)
         }}
         placeholder="Resumo curto e claro do conteúdo da publicação."
-        className="w-full resize-none rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+        className="block w-full min-w-0 max-w-full resize-y whitespace-pre-wrap break-words rounded-md border border-black/20 bg-white px-4 py-3 [overflow-wrap:anywhere] outline-none focus:border-black/50"
       />
 
       <span className="text-xs text-ink/40">
@@ -452,7 +497,7 @@ const finalSeoTitleLength =
           setHasUnsavedChanges(true)
         }}
         placeholder="Ex.: Atendimento odontológico na Lacort Odontologia Especializada"
-        className="w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
+        className="block w-full min-w-0 max-w-full rounded-md border border-black/20 bg-white px-4 py-3 outline-none focus:border-black/50"
       />
 
       <span className="text-xs leading-5 text-ink/40">
