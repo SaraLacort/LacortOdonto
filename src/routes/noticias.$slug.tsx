@@ -21,6 +21,7 @@ type Post = {
   read_time: number | null
   seo_title: string | null
   seo_description: string | null
+  sources: string | null
 }
 
 function buildSeoTitle(post: Post) {
@@ -55,7 +56,8 @@ export const Route = createFileRoute('/noticias/$slug')({
           updated_at,
           read_time,
           seo_title,
-          seo_description
+          seo_description,
+          sources
         `
       )
       .eq('slug', params.slug)
@@ -352,20 +354,71 @@ return (
       }}
     />
 
-            <div className="mt-16 border-t border-ink/10 pt-8">
-              <p className="text-sm leading-7 text-muted-foreground">
-                Este conteúdo tem caráter informativo e
-                não substitui uma avaliação odontológica
-                individualizada.
-              </p>
+{/* RODAPÉ EDITORIAL DO ARTIGO */}
+<footer className="mt-16 border-t border-ink/10 pt-10">
 
-              <Link
-                to="/noticias"
-                className="mt-7 inline-flex border-b border-gold-deep pb-1 text-sm font-medium text-ink transition hover:text-gold-deep"
-              >
-                ← Ver todos os conteúdos
-              </Link>
-            </div>
+  {/* FONTES E REFERÊNCIAS */}
+  {post.sources?.trim() && (
+    <section className="border-l-2 border-gold-deep bg-cream/50 px-6 py-6 md:px-8">
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold-deep">
+        Fontes e referências
+      </p>
+
+      <div className="mt-5 grid gap-3">
+        {post.sources
+          .split('\n')
+          .map((source) => source.trim())
+          .filter(Boolean)
+          .map((source, index) => (
+            <p
+              key={`${source}-${index}`}
+              className="max-w-full break-words text-sm leading-7 text-ink/60 [overflow-wrap:anywhere]"
+            >
+              {source}
+            </p>
+          ))}
+      </div>
+    </section>
+  )}
+
+  {/* AVISO INFORMATIVO */}
+  <div
+    className={
+      post.sources?.trim()
+        ? 'mt-10'
+        : ''
+    }
+  >
+    <p className="text-sm leading-7 text-muted-foreground">
+      Este conteúdo foi elaborado para fins educativos e
+      informativos. As informações apresentadas não substituem
+      avaliação odontológica individualizada, diagnóstico ou
+      plano de tratamento.
+    </p>
+  </div>
+
+  {/* RESPONSABILIDADE */}
+  <div className="mt-6 text-sm leading-7 text-ink/50">
+    <p className="font-medium text-ink/70">
+      Lacort Odontologia Especializada
+    </p>
+
+    <p>
+      Conteúdo produzido sob responsabilidade técnica da clínica.
+    </p>
+  </div>
+
+  {/* VOLTAR */}
+  <div className="mt-10 border-t border-ink/10 pt-7">
+    <Link
+      to="/noticias"
+      className="inline-flex border-b border-gold-deep pb-1 text-sm font-medium text-ink transition hover:text-gold-deep"
+    >
+      ← Ver todos os conteúdos
+    </Link>
+  </div>
+
+</footer>
 
           </div>
         </article>
