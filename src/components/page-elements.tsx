@@ -7,4 +7,67 @@ export function Eyebrow({ children }: { children: React.ReactNode }) { return <p
 export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: string; intro: string }) { return <section className="page-hero"><div className="site-container"><Eyebrow>{eyebrow}</Eyebrow><h1 className="page-title">{title}</h1><p className="page-intro">{intro}</p></div></section>; }
 export function Breadcrumbs({ current, parent, parentTo }: { current: string; parent?: string; parentTo?: string }) { return <nav aria-label="Caminho" className="breadcrumbs"><Link to="/">Início</Link><span>/</span>{parent && parentTo ? <><Link to={parentTo}>{parent}</Link><span>/</span></> : null}<span aria-current="page">{current}</span></nav>; }
 export function ArrowLink({ to, children }: { to: string; children: React.ReactNode }) { return <Link to={to} className="arrow-link">{children}<ArrowRight /></Link>; }
-export function FinalCta({ title = "Seu cuidado pode começar com uma conversa.", text = "Conte-nos o que você está buscando. Vamos entender juntos o melhor caminho para o seu caso." }: { title?: string; text?: string }) { return <section className="cta-band border-b-4 border-cream"><div className="site-container grid items-end gap-8 md:grid-cols-[1fr_auto]"><div><Eyebrow>Próximo passo</Eyebrow><h2 className="section-title max-w-3xl text-cream">{title}</h2><p className="mt-5 max-w-2xl text-cream/70">{text}</p></div><div className="flex flex-wrap gap-3"><Button asChild variant="gold" size="lg"><a href={whatsappUrl()} target="_blank" rel="noreferrer">Agendar avaliação</a></Button><Button asChild variant="outlineDark" size="lg"><a href={whatsappUrl("Olá! Gostaria de conversar com a equipe da Lacort.")} target="_blank" rel="noreferrer"><MessageCircle />WhatsApp</a></Button></div></div>   </section>; }
+export function FinalCta({
+  title = 'Seu cuidado pode começar com uma conversa.',
+  text = 'Conte-nos o que você está buscando. Vamos entender juntos o melhor caminho para o seu caso.',
+}: {
+  title?: string
+  text?: string
+}) {
+  return (
+    <section className="cta-band">
+      <div className="site-container">
+        <div className="grid items-center gap-8 border-b border-cream/15 pb-10 md:grid-cols-[1fr_auto] md:gap-12 md:pb-12">
+          <div>
+            <Eyebrow>
+              Próximo passo
+            </Eyebrow>
+
+            <h2 className="section-title max-w-3xl text-cream">
+              {title}
+            </h2>
+
+            <p className="mt-4 max-w-2xl leading-7 text-cream/70">
+              {text}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Button
+              asChild
+              variant="gold"
+              size="lg"
+              className="rounded-xl"
+            >
+              <a
+                href={whatsappUrl()}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Agendar avaliação
+              </a>
+            </Button>
+
+            <Button
+              asChild
+              variant="outlineDark"
+              size="lg"
+              className="rounded-xl"
+            >
+              <a
+                href={whatsappUrl(
+                  'Olá! Gostaria de conversar com a equipe da Lacort.'
+                )}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <MessageCircle />
+                WhatsApp
+              </a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

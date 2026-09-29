@@ -57,7 +57,7 @@
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.75rem;
   --background: oklch(0.975 0.009 85);
   --foreground: oklch(0.2 0.01 70);
   --card: oklch(1 0 0);
@@ -162,10 +162,38 @@
 @utility page-hero { padding-block: clamp(5rem, 11vw, 9rem); border-bottom: 1px solid var(--border); background: var(--cream); }
 @utility breadcrumbs { display: flex; flex-wrap: wrap; gap: .55rem; margin-bottom: 2rem; color: var(--muted-foreground); font-size: .75rem; }
 @utility arrow-link { display: inline-flex; align-items: center; gap: .7rem; color: var(--foreground); font-size: .82rem; font-weight: 800; text-transform: uppercase; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: .45rem; }
-@utility cta-band { background: var(--ink); padding-block: clamp(4.5rem, 9vw, 8rem); }
+@utility cta-band {
+  background: var(--ink);
+  padding-top: clamp(3rem, 5vw, 4.5rem);
+  padding-bottom: 0;
+}
 @utility footer-title { font-family: var(--font-brand); color: var(--gold); font-size: .78rem; text-transform: uppercase; }
 @utility footer-link { transition: color .2s ease; &:hover { color: var(--gold); } }
-@utility mobile-cta { position: fixed; z-index: 45; right: .6rem; bottom: calc(.6rem + env(safe-area-inset-bottom)); left: .6rem; display: grid; grid-template-columns: 1fr 1fr auto; gap: .4rem; border: 1px solid color-mix(in oklab, var(--gold) 35%, transparent); background: var(--ink); padding: .45rem; box-shadow: 0 14px 40px color-mix(in oklab, var(--ink) 28%, transparent); }
+@utility mobile-cta {
+  position: fixed;
+  z-index: 45;
+
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  left: 1rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  max-width: 32rem;
+  margin-inline: auto;
+
+  border: 1px solid color-mix(in oklab, var(--gold) 30%, transparent);
+  border-radius: 0.75rem;
+
+  background: var(--ink);
+
+  padding: 0.4rem;
+
+  box-shadow:
+    0 10px 30px color-mix(in oklab, var(--ink) 22%, transparent);
+}
 @utility editorial-rule { border-top: 1px solid var(--border); }
 @utility image-frame {
   overflow: hidden;
@@ -682,15 +710,31 @@
 
 .home-primary-button {
   min-height: 3.25rem;
-  border-radius: 0;
+  border-radius: 0.75rem;
   padding-inline: 1.65rem;
   font-weight: 800;
 }
 
 .home-secondary-button {
   min-height: 3.25rem;
-  border-radius: 0;
+  border-radius: 0.75rem;
   padding-inline: 1.65rem;
+}
+
+.home-photo-frame {
+  border-radius: 1rem;
+}
+
+.home-clinic-image {
+  border-radius: 1rem;
+}
+
+.home-photo-caption {
+  border-radius: 0.75rem;
+}
+
+.home-place-note {
+  border-radius: 0.75rem;
 }
 
 .home-first-visit {

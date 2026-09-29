@@ -43,6 +43,6 @@ export const nav = [
   { label: "A Clínica", to: "/sobre" },
   { label: "Tratamentos", to: "/tratamentos" },
   { label: "Para Pacientes", to: "/pacientes" },
-  { label: "Informativo", to: "/noticias" },
+  { label: "Conteúdos", to: "/noticias" },
   { label: "Contato", to: "/contato" },
 ] as const;

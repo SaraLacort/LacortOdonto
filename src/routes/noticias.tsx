@@ -82,7 +82,7 @@ const categories = [
   'Saúde Bucal',
   'Tratamentos',
   'Dúvidas',
-  'Nossas Novidades',
+  'Atualidades',
 ] as const
 
 function NoticiasPage() {
@@ -130,30 +130,42 @@ function NoticiasPage() {
     void loadPosts()
   }, [])
 
-  const featuredPost = useMemo(() => {
-    if (!posts.length) {
-      return null
-    }
+const categoryPosts = useMemo(() => {
+  if (selectedCategory === 'Todos') {
+    return posts
+  }
 
+  return posts.filter(
+    (post) => post.category === selectedCategory
+  )
+}, [posts, selectedCategory])
+
+const featuredPost = useMemo(() => {
+  if (!categoryPosts.length) {
+    return null
+  }
+
+  // Em "Todos", respeita um artigo marcado como destaque.
+  // Nas categorias, mostra o artigo mais recente daquela categoria.
+  if (selectedCategory === 'Todos') {
     return (
-      posts.find((post) => post.featured) ??
-      posts[0]
+      categoryPosts.find((post) => post.featured) ??
+      categoryPosts[0]
     )
-  }, [posts])
+  }
 
-  const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
-      if (post.id === featuredPost?.id) {
-        return false
-      }
+  return categoryPosts[0]
+}, [categoryPosts, selectedCategory])
 
-      if (selectedCategory === 'Todos') {
-        return true
-      }
+const filteredPosts = useMemo(() => {
+  if (!featuredPost) {
+    return []
+  }
 
-      return post.category === selectedCategory
-    })
-  }, [posts, selectedCategory, featuredPost])
+  return categoryPosts.filter(
+    (post) => post.id !== featuredPost.id
+  )
+}, [categoryPosts, featuredPost])
 
 if (!isNoticiasIndex) {
   return <Outlet />
@@ -161,52 +173,109 @@ if (!isNoticiasIndex) {
 
   return (
     <>
-      {/* HERO */}
-      <section className="border-b border-ink/10 bg-paper">
-        <div className="site-container pt-16 pb-12 md:pt-20 md:pb-14">
+{/* HERO + ARTIGO MAIS RECENTE */}
+<section className="border-b border-ink/10 bg-paper">
+  <div className="site-container py-14 md:py-20">
+
+    {/* CABEÇALHO */}
+    <div className="max-w-3xl">
+
+      <h1 className="mt-4 text-5xl leading-[1.05] text-ink md:text-7xl">
+        Conteúdos
+      </h1>
+
+      <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
+        Informações para ajudar você a entender melhor sua saúde
+        bucal, tratamentos e cuidados odontológicos.
+      </p>
+    </div>
+
+    {/* FILTROS */}
+    <div className="mt-9 flex flex-wrap gap-2 md:mt-10">
+      {categories.map((category) => {
+        const active =
+          selectedCategory === category
+
+        return (
+          <button
+            key={category}
+            type="button"
+            onClick={() =>
+              setSelectedCategory(category)
+            }
+            className={
+              active
+                ? 'rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-cream transition'
+                : 'rounded-full border border-ink/15 bg-transparent px-5 py-2.5 text-sm font-medium text-ink/70 transition hover:border-gold-deep hover:text-gold-deep'
+            }
+          >
+            {category}
+          </button>
+        )
+      })}
+    </div>
+
+    {/* ARTIGO MAIS RECENTE */}
+    {featuredPost && (
+      <article className="mt-12 grid border-t border-ink/10 pt-10 md:mt-14 md:grid-cols-[1.08fr_.92fr] md:items-center md:gap-14 md:pt-14">
+
+        {/* IMAGEM */}
+        <Link
+          to="/noticias/$slug"
+          params={{ slug: featuredPost.slug }}
+          className="block overflow-hidden rounded-2xl bg-cream"
+        >
+          {featuredPost.cover_image ? (
+            <img
+              src={featuredPost.cover_image}
+              alt={
+                featuredPost.cover_image_alt ||
+                featuredPost.title
+              }
+              className="aspect-[16/9] h-full w-full object-cover transition duration-500 hover:scale-[1.02]"
+            />
+          ) : (
+            <div className="aspect-[16/9] w-full bg-cream" />
+          )}
+        </Link>
+
+        {/* TEXTO */}
+        <div className="mt-8 md:mt-0">
           <p className="eyebrow">
-            Informativo
+            {featuredPost.category}
           </p>
 
-          <h1 className="mt-5 max-w-4xl text-5xl leading-[1.05] text-ink md:text-7xl">
-            Conteúdos
-          </h1>
+          <h2 className="mt-4 text-3xl leading-tight text-ink md:text-4xl">
+            <Link
+              to="/noticias/$slug"
+              params={{ slug: featuredPost.slug }}
+              className="transition hover:text-gold-deep"
+            >
+              {featuredPost.title}
+            </Link>
+          </h2>
 
+          <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground">
+            {featuredPost.excerpt}
+          </p>
 
+          <Link
+            to="/noticias/$slug"
+            params={{ slug: featuredPost.slug }}
+            className="mt-7 inline-flex border-b border-gold-deep pb-1 text-sm font-medium text-ink transition hover:text-gold-deep"
+          >
+            Ler conteúdo →
+          </Link>
         </div>
-      </section>
 
-      {/* FILTROS */}
-      <section className="border-b border-ink/10 bg-cream">
-        <div className="site-container">
-          <div className="flex gap-2 overflow-x-auto py-4">
-            {categories.map((category) => {
-              const active =
-                selectedCategory === category
+      </article>
+    )}
 
-              return (
-                <button
-                  key={category}
-                  type="button"
-                  onClick={() =>
-                    setSelectedCategory(category)
-                  }
-                  className={
-                    active
-                      ? 'shrink-0 bg-ink px-5 py-2.5 text-sm text-cream'
-                      : 'shrink-0 border border-ink/15 px-5 py-2.5 text-sm text-ink transition hover:border-gold-deep hover:text-gold-deep'
-                  }
-                >
-                  {category}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+  </div>
+</section>
 
       {/* CONTEÚDO */}
-      <section className="bg-paper py-16 md:py-24">
+      <section className="bg-paper py-10 md:py-14">
         <div className="site-container">
 
           {loading && (
@@ -249,92 +318,8 @@ if (!isNoticiasIndex) {
             !error &&
             featuredPost && (
               <>
-                {/* DESTAQUE */}
-                <div>
-                  <div className="mb-8 flex items-end justify-between gap-6">
-                    <div>
-                      <p className="eyebrow">
-                        Em destaque
-                      </p>
-
-                      <h2 className="mt-3 text-3xl text-ink md:text-4xl">
-                        Última publicação
-                      </h2>
-                    </div>
-                  </div>
-
-                  <article className="grid overflow-hidden border-y border-ink/10 py-8 md:grid-cols-[1.15fr_.85fr] md:gap-14 md:py-12">
-
-                    <Link
-                      to="/noticias/$slug"
-                      params={{
-                        slug: featuredPost.slug,
-                      }}
-                      className="group block"
-                    >
-                      {featuredPost.cover_image ? (
-                        <div className="overflow-hidden bg-cream">
-                          <img
-                            src={
-                              featuredPost.cover_image
-                            }
-                            alt={featuredPost.cover_image_alt || featuredPost.title}
-                            className="aspect-[16/10] h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex aspect-[16/10] items-center justify-center bg-cream">
-                          <span className="text-sm uppercase tracking-[0.15em] text-ink/30">
-                            Lacort Odontologia
-                          </span>
-                        </div>
-                      )}
-                    </Link>
-
-                    <div className="flex flex-col justify-center pt-8 md:pt-0">
-                      <p className="eyebrow">
-                        {featuredPost.category}
-                      </p>
-
-                      <h3 className="mt-4 text-3xl leading-tight text-ink md:text-4xl lg:text-5xl">
-                        <Link
-                          to="/noticias/$slug"
-                          params={{
-                            slug:
-                              featuredPost.slug,
-                          }}
-                          className="transition hover:text-gold-deep"
-                        >
-                          {featuredPost.title}
-                        </Link>
-                      </h3>
-
-                      <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
-                        {featuredPost.excerpt}
-                      </p>
-
-                      <PostMeta
-                        post={featuredPost}
-                      />
-
-                      <div className="mt-8">
-                        <Link
-                          to="/noticias/$slug"
-                          params={{
-                            slug:
-                              featuredPost.slug,
-                          }}
-                          className="inline-flex border-b border-gold-deep pb-1 text-sm font-medium text-ink transition hover:text-gold-deep"
-                        >
-                          Ler conteúdo →
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
-                </div>
-
                 {/* MAIS RECENTES */}
-                <div className="mt-20 md:mt-28">
+                <div className="mt-6 md:mt-10">
                   <div className="border-b border-ink/10 pb-6">
                     <p className="eyebrow">
                       Conteúdos
