@@ -1,66 +1,81 @@
-import { useEffect, useMemo, useState } from 'react'
-import { createFileRoute, Link, Outlet, useRouterState,} from '@tanstack/react-router'
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useRouterState,
+} from '@tanstack/react-router'
 
 import { FinalCta } from '@/components/page-elements'
 import { supabase } from '@/lib/supabase'
 
 export const Route = createFileRoute('/noticias')({
-head: () => ({
-  meta: [
-    {
-      title: "Saúde Bucal e Odontologia | Lacort Odonto",
-    },
-    {
-      name: "description",
-      content:
-        "Conteúdos sobre saúde bucal, tratamentos odontológicos, prevenção e dúvidas frequentes preparados pela Lacort Odonto.",
-    },
+  head: () => ({
+    meta: [
+      {
+        title:
+          'Saúde Bucal e Odontologia | Lacort Odonto',
+      },
+      {
+        name: 'description',
+        content:
+          'Conteúdos sobre saúde bucal, tratamentos odontológicos, prevenção e dúvidas frequentes preparados pela Lacort Odonto.',
+      },
 
-    // Open Graph
-    {
-      property: "og:title",
-      content: "Saúde Bucal e Odontologia | Lacort Odonto",
-    },
-    {
-      property: "og:description",
-      content:
-        "Informações sobre saúde bucal, tratamentos, prevenção e cuidados odontológicos.",
-    },
-    {
-      property: "og:type",
-      content: "website",
-    },
-    {
-      property: "og:url",
-      content: "https://lacortodonto.com.br/noticias",
-    },
+      // Open Graph
+      {
+        property: 'og:title',
+        content:
+          'Saúde Bucal e Odontologia | Lacort Odonto',
+      },
+      {
+        property: 'og:description',
+        content:
+          'Informações sobre saúde bucal, tratamentos, prevenção e cuidados odontológicos.',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      {
+        property: 'og:url',
+        content:
+          'https://lacortodonto.com.br/noticias',
+      },
 
-    // Twitter
-    {
-      name: "twitter:card",
-      content: "summary_large_image",
-    },
-    {
-      name: "twitter:title",
-      content: "Saúde Bucal e Odontologia | Lacort Odonto",
-    },
-    {
-      name: "twitter:description",
-      content:
-        "Informações sobre saúde bucal, tratamentos, prevenção e cuidados odontológicos.",
-    },
-  ],
+      // Twitter
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
+      },
+      {
+        name: 'twitter:title',
+        content:
+          'Saúde Bucal e Odontologia | Lacort Odonto',
+      },
+      {
+        name: 'twitter:description',
+        content:
+          'Informações sobre saúde bucal, tratamentos, prevenção e cuidados odontológicos.',
+      },
+    ],
 
-  links: [
-    {
-      rel: "canonical",
-      href: "https://lacortodonto.com.br/noticias",
-    },
-  ],
-}),
+    links: [
+      {
+        rel: 'canonical',
+        href:
+          'https://lacortodonto.com.br/noticias',
+      },
+    ],
+  }),
 
-component: NoticiasPage,
-
+  component: NoticiasPage,
 })
 
 type Post = {
@@ -85,20 +100,41 @@ const categories = [
   'Atualidades',
 ] as const
 
+const POSTS_PER_PAGE = 12
+
 function NoticiasPage() {
   const [posts, setPosts] = useState<Post[]>([])
-  const [selectedCategory, setSelectedCategory] =useState<(typeof categories)[number]>('Todos')
-  const pathname = useRouterState({select: (state) => state.location.pathname,})
-  const isNoticiasIndex = pathname === '/noticias'
+
+  const [selectedCategory, setSelectedCategory] =
+    useState<(typeof categories)[number]>('Todos')
+
   const [loading, setLoading] = useState(true)
+
   const [error, setError] = useState('')
+
+  const [currentPage, setCurrentPage] =
+    useState(1)
+
+  const categoriesSectionRef =
+    useRef<HTMLDivElement | null>(null)
+
+  const pathname = useRouterState({
+    select: (state) =>
+      state.location.pathname,
+  })
+
+  const isNoticiasIndex =
+    pathname === '/noticias'
 
   useEffect(() => {
     async function loadPosts() {
       setLoading(true)
       setError('')
 
-      const { data, error: postsError } = await supabase
+      const {
+        data,
+        error: postsError,
+      } = await supabase
         .from('posts')
         .select(
           'id, title, slug, category, excerpt, cover_image, cover_image_alt, featured, published_at, created_at, read_time'
@@ -130,153 +166,221 @@ function NoticiasPage() {
     void loadPosts()
   }, [])
 
-const categoryPosts = useMemo(() => {
-  if (selectedCategory === 'Todos') {
-    return posts
-  }
+  /*
+   * ARTIGO PRINCIPAL
+   * O primeiro artigo retornado é sempre
+   * o mais recente.
+   */
+  const featuredPost = useMemo(() => {
+    if (!posts.length) {
+      return null
+    }
 
-  return posts.filter(
-    (post) => post.category === selectedCategory
+    return posts[0]
+  }, [posts])
+
+  /*
+   * FILTRO
+   * Remove o artigo principal para que
+   * ele não apareça novamente no grid.
+   */
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      if (
+        post.id === featuredPost?.id
+      ) {
+        return false
+      }
+
+      if (
+        selectedCategory === 'Todos'
+      ) {
+        return true
+      }
+
+      return (
+        post.category ===
+        selectedCategory
+      )
+    })
+  }, [
+    posts,
+    selectedCategory,
+    featuredPost,
+  ])
+
+  /*
+   * PAGINAÇÃO
+   * 12 artigos = 4 linhas de 3 artigos
+   * no desktop.
+   */
+  const totalPages = Math.ceil(
+    filteredPosts.length /
+      POSTS_PER_PAGE
   )
-}, [posts, selectedCategory])
 
-const featuredPost = useMemo(() => {
-  if (!categoryPosts.length) {
-    return null
-  }
+  const paginatedPosts = useMemo(() => {
+    const start =
+      (currentPage - 1) *
+      POSTS_PER_PAGE
 
-  // Em "Todos", respeita um artigo marcado como destaque.
-  // Nas categorias, mostra o artigo mais recente daquela categoria.
-  if (selectedCategory === 'Todos') {
-    return (
-      categoryPosts.find((post) => post.featured) ??
-      categoryPosts[0]
+    const end =
+      start + POSTS_PER_PAGE
+
+    return filteredPosts.slice(
+      start,
+      end
     )
+  }, [
+    filteredPosts,
+    currentPage,
+  ])
+
+  /*
+   * Se a quantidade de páginas mudar
+   * e a página atual deixar de existir,
+   * retorna para a última página válida.
+   */
+  useEffect(() => {
+    if (
+      totalPages > 0 &&
+      currentPage > totalPages
+    ) {
+      setCurrentPage(totalPages)
+    }
+  }, [totalPages, currentPage])
+
+  /*
+   * TROCA DE PÁGINA
+   * Volta suavemente para o início
+   * da área de categorias.
+   */
+  function changePage(page: number) {
+    if (
+      page < 1 ||
+      page > totalPages ||
+      page === currentPage
+    ) {
+      return
+    }
+
+    setCurrentPage(page)
+
+    window.requestAnimationFrame(() => {
+      categoriesSectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    })
   }
 
-  return categoryPosts[0]
-}, [categoryPosts, selectedCategory])
-
-const filteredPosts = useMemo(() => {
-  if (!featuredPost) {
-    return []
+  if (!isNoticiasIndex) {
+    return <Outlet />
   }
-
-  return categoryPosts.filter(
-    (post) => post.id !== featuredPost.id
-  )
-}, [categoryPosts, featuredPost])
-
-if (!isNoticiasIndex) {
-  return <Outlet />
-}
 
   return (
     <>
-{/* HERO + ARTIGO MAIS RECENTE */}
-<section className="border-b border-ink/10 bg-paper">
-  <div className="site-container py-14 md:py-20">
+      {/* =========================================
+          HERO + ARTIGO MAIS RECENTE
+          ========================================= */}
 
-    {/* CABEÇALHO */}
-    <div className="max-w-3xl">
+      <section className="border-b border-ink/10 bg-paper">
+        <div className="site-container pb-10 pt-2 md:pb-12 md:pt-3">
 
-      <h1 className="mt-4 text-5xl leading-[1.05] text-ink md:text-7xl">
-        Conteúdos
-      </h1>
+          {/* CABEÇALHO */}
 
-      <p className="mt-6 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
-        Informações para ajudar você a entender melhor sua saúde
-        bucal, tratamentos e cuidados odontológicos.
-      </p>
-    </div>
+          <div className="max-w-3xl">
+            <h1 className="mt-4 text-5xl leading-[1.05] text-ink md:text-7xl">
+              Conteúdos
+            </h1>
 
-    {/* FILTROS */}
-    <div className="mt-9 flex flex-wrap gap-2 md:mt-10">
-      {categories.map((category) => {
-        const active =
-          selectedCategory === category
+            <p className="mt-2 max-w-2xl text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
+              Informações para ajudar você
+              a entender melhor sua saúde
+              bucal, tratamentos e cuidados
+              odontológicos.
+            </p>
+          </div>
 
-        return (
-          <button
-            key={category}
-            type="button"
-            onClick={() =>
-              setSelectedCategory(category)
-            }
-            className={
-              active
-                ? 'rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-cream transition'
-                : 'rounded-full border border-ink/15 bg-transparent px-5 py-2.5 text-sm font-medium text-ink/70 transition hover:border-gold-deep hover:text-gold-deep'
-            }
-          >
-            {category}
-          </button>
-        )
-      })}
-    </div>
+          {/* ARTIGO MAIS RECENTE */}
 
-    {/* ARTIGO MAIS RECENTE */}
-    {featuredPost && (
-      <article className="mt-12 grid border-t border-ink/10 pt-10 md:mt-14 md:grid-cols-[1.08fr_.92fr] md:items-center md:gap-14 md:pt-14">
+          {featuredPost && (
+            <article className="mt-7 grid border-t border-ink/10 pt-7 md:mt-8 md:grid-cols-[1.08fr_.92fr] md:items-center md:gap-14 md:pt-8">
 
-        {/* IMAGEM */}
-        <Link
-          to="/noticias/$slug"
-          params={{ slug: featuredPost.slug }}
-          className="block overflow-hidden rounded-2xl bg-cream"
-        >
-          {featuredPost.cover_image ? (
-            <img
-              src={featuredPost.cover_image}
-              alt={
-                featuredPost.cover_image_alt ||
-                featuredPost.title
-              }
-              className="aspect-[16/9] h-full w-full object-cover transition duration-500 hover:scale-[1.02]"
-            />
-          ) : (
-            <div className="aspect-[16/9] w-full bg-cream" />
+              {/* IMAGEM */}
+
+              <Link
+                to="/noticias/$slug"
+                params={{
+                  slug:
+                    featuredPost.slug,
+                }}
+                className="block overflow-hidden rounded-2xl bg-cream"
+              >
+                {featuredPost.cover_image ? (
+                  <img
+                    src={
+                      featuredPost.cover_image
+                    }
+                    alt={
+                      featuredPost.cover_image_alt ||
+                      featuredPost.title
+                    }
+                    className="aspect-[16/9] h-full w-full object-cover transition duration-500 hover:scale-[1.02]"
+                  />
+                ) : (
+                  <div className="aspect-[16/9] w-full bg-cream" />
+                )}
+              </Link>
+
+              {/* TEXTO */}
+
+              <div className="mt-8 md:mt-0">
+                <p className="eyebrow">
+                  Última publicação
+                </p>
+
+                <h2 className="mt-4 text-3xl leading-tight text-ink md:text-4xl">
+                  <Link
+                    to="/noticias/$slug"
+                    params={{
+                      slug:
+                        featuredPost.slug,
+                    }}
+                    className="transition hover:text-gold-deep"
+                  >
+                    {featuredPost.title}
+                  </Link>
+                </h2>
+
+                <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground">
+                  {featuredPost.excerpt}
+                </p>
+
+                <Link
+                  to="/noticias/$slug"
+                  params={{
+                    slug:
+                      featuredPost.slug,
+                  }}
+                  className="mt-7 inline-flex border-b border-gold-deep pb-1 text-sm font-medium text-ink transition hover:text-gold-deep"
+                >
+                  Ler conteúdo →
+                </Link>
+              </div>
+            </article>
           )}
-        </Link>
-
-        {/* TEXTO */}
-        <div className="mt-8 md:mt-0">
-          <p className="eyebrow">
-            {featuredPost.category}
-          </p>
-
-          <h2 className="mt-4 text-3xl leading-tight text-ink md:text-4xl">
-            <Link
-              to="/noticias/$slug"
-              params={{ slug: featuredPost.slug }}
-              className="transition hover:text-gold-deep"
-            >
-              {featuredPost.title}
-            </Link>
-          </h2>
-
-          <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground">
-            {featuredPost.excerpt}
-          </p>
-
-          <Link
-            to="/noticias/$slug"
-            params={{ slug: featuredPost.slug }}
-            className="mt-7 inline-flex border-b border-gold-deep pb-1 text-sm font-medium text-ink transition hover:text-gold-deep"
-          >
-            Ler conteúdo →
-          </Link>
         </div>
+      </section>
 
-      </article>
-    )}
+      {/* =========================================
+          CONTEÚDOS
+          ========================================= */}
 
-  </div>
-</section>
-
-      {/* CONTEÚDO */}
       <section className="bg-paper py-10 md:py-14">
         <div className="site-container">
+
+          {/* CARREGANDO */}
 
           {loading && (
             <div className="py-24 text-center">
@@ -286,6 +390,8 @@ if (!isNoticiasIndex) {
             </div>
           )}
 
+          {/* ERRO */}
+
           {!loading && error && (
             <div className="border border-ink/10 bg-cream px-6 py-12 text-center">
               <p className="text-muted-foreground">
@@ -293,6 +399,8 @@ if (!isNoticiasIndex) {
               </p>
             </div>
           )}
+
+          {/* SEM PUBLICAÇÕES */}
 
           {!loading &&
             !error &&
@@ -303,40 +411,78 @@ if (!isNoticiasIndex) {
                 </p>
 
                 <h2 className="mx-auto mt-4 max-w-xl text-3xl text-ink md:text-4xl">
-                  Estamos preparando novos conteúdos.
+                  Estamos preparando novos
+                  conteúdos.
                 </h2>
 
                 <p className="mx-auto mt-5 max-w-xl leading-7 text-muted-foreground">
-                  Em breve você encontrará aqui
-                  informações sobre saúde bucal,
-                  tratamentos e cuidados odontológicos.
+                  Em breve você encontrará
+                  aqui informações sobre
+                  saúde bucal, tratamentos e
+                  cuidados odontológicos.
                 </p>
               </div>
             )}
 
+          {/* =====================================
+              EXPLORE POR CATEGORIAS
+              ===================================== */}
+
           {!loading &&
             !error &&
             featuredPost && (
-              <>
-                {/* MAIS RECENTES */}
-                <div className="mt-6 md:mt-10">
-                  <div className="border-b border-ink/10 pb-6">
-                    <p className="eyebrow">
-                      Conteúdos
-                    </p>
+              <div
+                ref={categoriesSectionRef}
+                className="w-full scroll-mt-24"
+              >
+                <div className="border-b border-ink/10 pb-6">
+                  <h2 className="mt-4 text-5xl leading-[1.05] text-ink md:text-7xl">
+                    Explore por categorias
+                  </h2>
+                </div>
 
-                    <h2 className="mt-3 text-3xl text-ink md:text-4xl">
-                      {selectedCategory ===
-                      'Todos'
-                        ? 'Mais recentes'
-                        : selectedCategory}
-                    </h2>
-                  </div>
+                {/* FILTROS */}
 
-                  {filteredPosts.length >
-                  0 ? (
-                    <div className="grid gap-x-8 gap-y-16 pt-10 md:grid-cols-2 lg:grid-cols-3">
-                      {filteredPosts.map(
+                <div className="mt-5 flex flex-wrap gap-2 md:mt-6">
+                  {categories.map(
+                    (category) => {
+                      const active =
+                        selectedCategory ===
+                        category
+
+                      return (
+                        <button
+                          key={category}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCategory(
+                              category
+                            )
+
+                            setCurrentPage(1)
+                          }}
+                          className={
+                            active
+                              ? 'rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-cream transition'
+                              : 'rounded-full border border-ink/15 bg-transparent px-5 py-2.5 text-sm font-medium text-ink/70 transition hover:border-gold-deep hover:text-gold-deep'
+                          }
+                        >
+                          {category}
+                        </button>
+                      )
+                    }
+                  )}
+                </div>
+
+                {/* =================================
+                    GRID
+                    ================================= */}
+
+                {filteredPosts.length >
+                0 ? (
+                  <>
+                    <div className="grid w-full gap-x-8 gap-y-14 pt-10 md:grid-cols-2 lg:grid-cols-3">
+                      {paginatedPosts.map(
                         (post) => (
                           <PostCard
                             key={post.id}
@@ -345,16 +491,99 @@ if (!isNoticiasIndex) {
                         )
                       )}
                     </div>
-                  ) : (
-                    <div className="py-20 text-center">
-                      <p className="text-muted-foreground">
-                        Ainda não há outros
-                        conteúdos nesta categoria.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </>
+
+                    {/* =============================
+                        PAGINAÇÃO
+                        ============================= */}
+
+                    {totalPages > 1 && (
+                      <nav
+                        className="mt-14 flex flex-wrap items-center justify-center gap-2 border-t border-ink/10 pt-8"
+                        aria-label="Paginação dos conteúdos"
+                      >
+                        {/* ANTERIOR */}
+
+                        <button
+                          type="button"
+                          disabled={
+                            currentPage === 1
+                          }
+                          onClick={() =>
+                            changePage(
+                              currentPage - 1
+                            )
+                          }
+                          className="rounded-full border border-ink/15 px-5 py-2.5 text-sm font-medium text-ink transition hover:border-gold-deep hover:text-gold-deep disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-ink/15 disabled:hover:text-ink"
+                        >
+                          ← Anterior
+                        </button>
+
+                        {/* NÚMEROS */}
+
+                        {Array.from(
+                          {
+                            length:
+                              totalPages,
+                          },
+                          (_, index) =>
+                            index + 1
+                        ).map((page) => (
+                          <button
+                            key={page}
+                            type="button"
+                            onClick={() =>
+                              changePage(
+                                page
+                              )
+                            }
+                            aria-current={
+                              currentPage ===
+                              page
+                                ? 'page'
+                                : undefined
+                            }
+                            aria-label={`Página ${page}`}
+                            className={
+                              currentPage ===
+                              page
+                                ? 'flex size-10 items-center justify-center rounded-full bg-ink text-sm font-medium text-cream'
+                                : 'flex size-10 items-center justify-center rounded-full border border-ink/15 text-sm font-medium text-ink transition hover:border-gold-deep hover:text-gold-deep'
+                            }
+                          >
+                            {page}
+                          </button>
+                        ))}
+
+                        {/* PRÓXIMA */}
+
+                        <button
+                          type="button"
+                          disabled={
+                            currentPage ===
+                            totalPages
+                          }
+                          onClick={() =>
+                            changePage(
+                              currentPage + 1
+                            )
+                          }
+                          className="rounded-full border border-ink/15 px-5 py-2.5 text-sm font-medium text-ink transition hover:border-gold-deep hover:text-gold-deep disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-ink/15 disabled:hover:text-ink"
+                        >
+                          Próxima →
+                        </button>
+                      </nav>
+                    )}
+                  </>
+                ) : (
+                  <div className="py-20 text-center">
+                    <p className="text-muted-foreground">
+                      Ainda não há outros
+                      conteúdos nesta
+                      categoria.
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
         </div>
       </section>
@@ -363,6 +592,10 @@ if (!isNoticiasIndex) {
     </>
   )
 }
+
+/* =========================================
+   CARD DE PUBLICAÇÃO
+   ========================================= */
 
 function PostCard({
   post,
@@ -373,13 +606,18 @@ function PostCard({
     <article className="group">
       <Link
         to="/noticias/$slug"
-        params={{ slug: post.slug }}
-        className="block overflow-hidden bg-cream"
+        params={{
+          slug: post.slug,
+        }}
+        className="block overflow-hidden rounded-2xl bg-cream"
       >
         {post.cover_image ? (
           <img
             src={post.cover_image}
-           alt={post.cover_image_alt || post.title}
+            alt={
+              post.cover_image_alt ||
+              post.title
+            }
             loading="lazy"
             className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.025]"
           />
@@ -400,7 +638,9 @@ function PostCard({
         <h3 className="mt-3 text-2xl leading-snug text-ink">
           <Link
             to="/noticias/$slug"
-            params={{ slug: post.slug }}
+            params={{
+              slug: post.slug,
+            }}
             className="transition hover:text-gold-deep"
           >
             {post.title}
@@ -415,7 +655,9 @@ function PostCard({
 
         <Link
           to="/noticias/$slug"
-          params={{ slug: post.slug }}
+          params={{
+            slug: post.slug,
+          }}
           className="mt-5 inline-flex border-b border-gold-deep pb-1 text-sm font-medium text-ink transition hover:text-gold-deep"
         >
           Ler conteúdo →
@@ -425,24 +667,34 @@ function PostCard({
   )
 }
 
+/* =========================================
+   METADADOS
+   ========================================= */
+
 function PostMeta({
   post,
 }: {
   post: Post
 }) {
   const date =
-    post.published_at ?? post.created_at
+    post.published_at ??
+    post.created_at
 
   const formattedDate =
-    new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(date))
+    new Intl.DateTimeFormat(
+      'pt-BR',
+      {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }
+    ).format(new Date(date))
 
   return (
     <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground/70">
-      <span>{formattedDate}</span>
+      <span>
+        {formattedDate}
+      </span>
 
       {post.read_time && (
         <>
@@ -451,7 +703,8 @@ function PostMeta({
           </span>
 
           <span>
-            {post.read_time} min de leitura
+            {post.read_time} min de
+            leitura
           </span>
         </>
       )}
